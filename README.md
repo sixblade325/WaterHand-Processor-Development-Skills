@@ -14,7 +14,7 @@
 
 | 任务 | Skill | 主要交付 |
 |---|---|---|
-| 建立项目协作约束 | `bootstrap-processor-project` | 项目根目录 `AGENTS.md`，或已有规则的增量建议 |
+| 建立项目协作约束 | `bootstrap-processor-project` | 精简的项目根目录 `AGENTS.md`，或已有规则的增量建议 |
 | 组织与维护工程文档 | `organize-processor-docs` | 文档职责、阅读入口、事实归属和渐进式文档结构 |
 | 设计与审查微架构 | `design-chisel-processor` | 周期语义、接口、状态生命周期、优先级和验证要求 |
 | 实现并验证 Chisel RTL | `implement-chisel-processor` | 源码、源码旁 `_codex.md`、断言、定向测试及执行证据 |
@@ -64,6 +64,8 @@ Skill 的完整用法与提示词见 [用户指南](USER_GUIDE.md#9-skill-使用
 ```
 
 新项目的协作规则初始化、文档组织、实现和时序工作流见 [用户指南](USER_GUIDE.md)。
+
+项目级 `AGENTS.md` 保留事实权威、授权、路径和工具入口，技术方法按任务从 Skill 读取。新项目的 bootstrap 与文档组织使用一致的 `doc/` 默认布局；已有项目保留其明确映射，详见[初始化规则](USER_GUIDE.md#92-bootstrap-processor-project)。
 
 ## 产品如何与工程配合
 

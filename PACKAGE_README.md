@@ -77,7 +77,7 @@ codex plugin list --json
 
 | 需要完成的工作 | 调用的 Skill |
 |---|---|
-| 建立项目根目录协作规则 | `$bootstrap-processor-project` |
+| 建立精简的项目根目录协作规则 | `$bootstrap-processor-project` |
 | 组织和维护工程文档 | `$organize-processor-docs` |
 | 闭合微架构设计和周期语义 | `$design-chisel-processor` |
 | 实现 Chisel RTL 并验证 | `$implement-chisel-processor` |
@@ -85,6 +85,8 @@ codex plugin list --json
 | 修改并验证 FPGA 时序优化方案 | `$optimize-chisel-fpga-timing` |
 
 各项 Skill 的输入、权限边界和完整提示词见 [用户指南](USER_GUIDE.md#9-skill-使用方式)。处理器项目的功能和时序验收由该项目的测试与实现结果确定。
+
+新项目先用 bootstrap 建立项目 `AGENTS.md`，再用文档组织 Skill 按需建立文档。两者采用一致的 `doc/` 默认布局；已有项目保留其明确映射。`AGENTS.md` 保存项目约束和入口，技术细则由对应 Skill 按任务加载，详见[初始化规则](USER_GUIDE.md#92-bootstrap-processor-project)。
 
 ## 4. 使用配套工具
 

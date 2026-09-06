@@ -43,7 +43,7 @@ Use the smallest set of documents that supports the actual tasks. Do not create 
 
 ## Canonical directory layout
 
-Place the maintained processor document network under the project-root `doc/` directory:
+For a new project without an established mapping, place the maintained processor document network under the project-root `doc/` directory. This matches the `bootstrap-processor-project` baseline. For an existing approved layout, substitute the mapped paths throughout this reference and preserve them unless migration is authorized:
 
 ```text
 doc/
@@ -121,7 +121,7 @@ For an existing project:
 1. preserve user-authored content;
 2. add or repair entry maps first;
 3. resolve conflicting authority before moving files;
-4. report document roots outside `doc/` as migration candidates and obtain user confirmation before relocation;
+4. honor the approved project mapping, including roots outside `doc/`; propose migration only when the task requires reorganizing it, and obtain authorization before relocating authority or revising `AGENTS.md`;
 5. relocate one coherent responsibility at a time;
 6. update inbound and outbound links in the same candidate change;
 7. remove duplicate current copies after their facts have a confirmed owner.

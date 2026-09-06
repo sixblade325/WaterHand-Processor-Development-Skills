@@ -46,6 +46,7 @@
 
 ## Redundancy discipline
 
+- Do not broaden stall, flush, kill, or serialization beyond the documented contract to make a test pass.
 - Do not duplicate a downstream ready/flush/valid guarantee as runtime logic unless the design requires local enforcement.
 - Add an assertion when an upstream module owns the contract.
 - Do not add a zero-mask mux around `PriorityEncoderOH`; zero input already produces zero.

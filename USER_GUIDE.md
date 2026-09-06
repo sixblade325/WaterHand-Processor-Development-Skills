@@ -126,7 +126,7 @@ $env:PROCESSOR_SKILLS_VIVADO = "C:\Xilinx\Vivado\2025.1\bin\vivado.bat"
 .\scripts\run.cmd check-docs E:\projects\my-cpu --json
 ```
 
-自定义文档根可以重复传入：
+检查器默认发现 `doc/` 下的文档域，不读取或修改 `AGENTS.md`。已有项目采用其他明确映射时，按映射重复传入自定义文档根；文档总入口及其链接另行核对：
 
 ```powershell
 .\scripts\run.cmd check-docs E:\projects\my-cpu `
@@ -197,13 +197,18 @@ Agent 会先读取目标项目中适用的 `AGENTS.md`。环境诊断、Chisel �
 
 ### 9.2 `$bootstrap-processor-project`
 
-用于创建项目根目录 `AGENTS.md`，或将已有 `AGENTS.md` 与包内基线按职责进行比较。
+用于创建精简的项目根目录 `AGENTS.md`，或将已有 `AGENTS.md` 与包内基线按职责进行比较。基线保留事实权威、授权、目录映射、已核验的工具入口和任务 Skill 索引。设计门禁、硬件规则、源码摘要和验证细则由对应 Skill 维护；通用基线不复制个人化输出风格。
+
+新项目的默认映射见[包内基线](skills/bootstrap-processor-project/assets/AGENTS.md)：Architecture、Design、Verification 分别位于 `doc/Architecture/`、`doc/Design/`、`doc/Verification/`，文档总入口为 `doc/README.md`，源码为 `src/`，运行产物为 `.runtime/`。bootstrap 只登记这些路径，后续文档组织 Skill 在有实际内容时创建相应文档。
+
+已有项目保留可核验的实际映射和局部约束。变更映射时须经授权，并同步项目 `AGENTS.md`、实际文档和链接。升级插件不会自动精简或覆盖已经写入项目的 `AGENTS.md`。
 
 缺少 `AGENTS.md` 时，可以直接要求初始化：
 
 ```text
 使用 $bootstrap-processor-project 初始化 E:\projects\my-cpu 的项目级 AGENTS.md。
-只采用仓库中可验证的目录和命令，只允许修改根目录 AGENTS.md。
+保留仓库中可验证的映射和命令；缺少既有映射时采用包内默认值。
+只允许修改根目录 AGENTS.md。
 ```
 
 已有 `AGENTS.md` 时，先请求增量建议：
@@ -217,7 +222,7 @@ Agent 会先读取目标项目中适用的 `AGENTS.md`。环境诊断、Chisel �
 
 ### 9.3 `$organize-processor-docs`
 
-用于渐进建立、撰写、重构或审查项目根目录 `doc/` 下的人类可读文档网络。它提供三种模式：
+用于渐进建立、撰写、重构或审查人类可读文档网络。新项目默认使用项目根目录 `doc/`，已有项目按其明确映射解释 Skill 中的默认路径。它提供三种模式：
 
 | 模式 | 使用时机 | 主要结果 |
 |---|---|---|
@@ -229,7 +234,8 @@ Agent 会先读取目标项目中适用的 `AGENTS.md`。环境诊断、Chisel �
 
 ```text
 使用 $organize-processor-docs 的 Bootstrap 模式整理当前项目文档。
-以一个 doc/ 为正式文档根，建立 README 阅读入口；Design/Module 按稳定物理模块拓扑组织，并链接 Protocol、Lifecycle、ADR 和 Verification。
+按 AGENTS.md 中的项目映射组织文档；没有既有映射时采用 doc/ 默认布局。
+建立 README 阅读入口；Design/Module 按稳定物理模块拓扑组织，并链接 Protocol、Lifecycle、ADR 和 Verification。
 先列出权威归属、目标路径和需要用户决定的冲突，再实施已确定的部分。
 ```
 

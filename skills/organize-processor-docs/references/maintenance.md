@@ -43,6 +43,8 @@ python <skill-dir>/scripts/check_docs.py <project-root> --json
 
 The checker prefers `doc/Architecture/`, `doc/Design/`, `doc/Verification/`, and optional `doc/Research/`, discovered case-insensitively. A wholly legacy top-level layout produces a migration warning. Mixing canonical and top-level domain roots is an error, including different domains and parallel copies of the same domain. Use repeated `--root <path>` for an explicitly approved custom document layout.
 
+The checker does not read or change `AGENTS.md`. Resolve approved custom roots from the project mapping and pass each with `--root`; audit the mapped overall entry and links separately. A default-discovery warning grants no migration authority. Apply the same ownership and reading-path requirements to equivalent custom paths.
+
 It checks:
 
 1. `doc/README.md`, domain entry presence, and direct links from the overall entry to every present domain;

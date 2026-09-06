@@ -59,7 +59,7 @@
 5. 修改 Skill 后运行 `scripts\run.cmd validate-skills`，执行受影响的测试，并记录受影响的工作流。
 6. Skill 的公开调用方式或职责边界变化时同步更新 `README.md`、`USER_GUIDE.md` 和 `skills/MANIFEST.md` 中的相关内容。
 7. 安装包只包含运行所需的 plugin、Skill、工具、环境契约、脚本和用户文档。产品计划、日志、测试、缓存和实验运行结果不得进入正式安装包。
-8. `bootstrap-processor-project` 只创建或提议更新用户项目根目录 `AGENTS.md`。环境和工具链工作由确定性脚本承担。
+8. `bootstrap-processor-project` 只创建或提议更新用户项目根目录 `AGENTS.md`，基线只保留事实权威、授权、目录映射、工具入口和任务 Skill 索引。技术方法由对应 Skill 维护。新项目默认映射与 `organize-processor-docs` 一致，已有项目映射继续有效。环境和工具链工作由确定性脚本承担。
 9. `organize-processor-docs` 负责信息架构和写作约束。周期精确语义由 `design-chisel-processor` 负责。
 10. `implement-chisel-processor` 要求同步维护源码旁 `_codex.md`。双 subagent 核验默认关闭，只在用户明确要求时开启。
 11. 本仓库许可证以根目录 `LICENSE` 为准，统一标识为 `MulanPSL-2.0`。插件、Skill、安装包元数据和发布文档保持一致；保留第三方材料、外部工具及用户项目各自的许可证归属。

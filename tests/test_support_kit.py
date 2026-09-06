@@ -553,6 +553,62 @@ class ValidationAndPackagingTest(unittest.TestCase):
             self.assertEqual(entry["policy"]["authentication"], "ON_INSTALL")
 
 
+class BootstrapContractTest(unittest.TestCase):
+    baseline = (
+        REPO_ROOT / "skills" / "bootstrap-processor-project" / "assets" / "AGENTS.md"
+    )
+
+    def test_maintained_baseline_fits_startup_context_budget(self) -> None:
+        self.assertLessEqual(len(self.baseline.read_bytes()), 4096)
+
+    def test_bootstrap_mapping_composes_with_document_checker(self) -> None:
+        baseline = self.baseline.read_text(encoding="utf-8")
+        mapping = dict(re.findall(
+            r"^(Architecture|Design|Source|Verification|Runtime):\s*(\S+)",
+            baseline,
+            re.MULTILINE,
+        ))
+        self.assertEqual(set(mapping), {"Architecture", "Design", "Source", "Verification", "Runtime"})
+        with tempfile.TemporaryDirectory() as temp_name:
+            project = Path(temp_name)
+            agents = project / "AGENTS.md"
+            agents.write_text(baseline, encoding="utf-8")
+            before = agents.read_bytes()
+            documents = {
+                "Architecture": "# Architecture\n计数器复位后输出为零；使能时每拍递增一次。\n",
+                "Design": "# Design\n一个 8 位寄存器保存计数值；复位优先于递增，溢出回绕。\n",
+                "Verification": "# Verification\n检查复位、使能暂停、连续递增及 255 到 0 的回绕。\n",
+            }
+            for domain, content in documents.items():
+                directory = project / mapping[domain]
+                directory.mkdir(parents=True)
+                (directory / "README.md").write_text(content, encoding="utf-8")
+            entry = project / "doc" / "README.md"
+            entry.parent.mkdir(exist_ok=True)
+            entry.write_text(
+                "# 计数器文档\n"
+                "[目标](Architecture/README.md)\n"
+                "[设计](Design/README.md)\n"
+                "[验证](Verification/README.md)\n",
+                encoding="utf-8",
+            )
+            completed = subprocess.run(
+                [sys.executable, "-X", "utf8", str(TOOLS_ROOT / "processor-skills.py"),
+                 "check-docs", str(project), "--json"],
+                cwd=REPO_ROOT.parent, check=False, capture_output=True,
+                text=True, encoding="utf-8", errors="strict", timeout=30,
+            )
+            self.assertEqual(completed.returncode, 0, completed.stderr + completed.stdout)
+            report = json.loads(completed.stdout)
+            self.assertTrue(report["ok"])
+            self.assertEqual(report["layout"], "doc")
+            self.assertEqual(set(report["roots"]), {mapping[key].rstrip("/") for key in documents})
+            self.assertEqual(report["issues"], [])
+            self.assertEqual(agents.read_bytes(), before)
+            self.assertFalse((project / mapping["Source"]).exists())
+            self.assertFalse((project / mapping["Runtime"]).exists())
+
+
 class InstallationTest(unittest.TestCase):
     def test_install_adds_marketplace_then_plugin(self) -> None:
         with tempfile.TemporaryDirectory() as root_name:

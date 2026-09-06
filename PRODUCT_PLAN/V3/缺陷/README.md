@@ -24,3 +24,5 @@
 15. [PA3-DEFECT-016：已恢复的重连事件被误判为会话失败](PA3-DEFECT-016-RECOVERED-RECONNECT-MARKED-FATAL.md)，run-003 Control main 已复现，证据解析修复待实现。
 16. [PA3-DEFECT-017：零 idle Memory 初始化把摘要归因固定在错误会话](PA3-DEFECT-017-ZERO-IDLE-MEMORY-PROBE-RACE.md)，run-004 已使用隔离兼容封存继续运行，通用修复待实现。
 17. [PA3-DEFECT-018：中文交付包路径导致 Chisel 适配器编译失败](PA3-DEFECT-018-NON-ASCII-PACKAGE-RUNTIME-PATH.md)，按用户决定接受为已知限制，交付文档已声明完整 ASCII 包路径要求，不实施中文包路径适配。
+18. [PA3-DEFECT-019：项目 AGENTS 基线重复注入技术方法](PA3-DEFECT-019-BOOTSTRAP-BASELINE-DUPLICATION.md)，已精简为项目约束和入口，体积回归及完整测试通过。
+19. [PA3-DEFECT-020：bootstrap 与文档组织的默认目录不一致](PA3-DEFECT-020-BOOTSTRAP-DOCUMENT-MAPPING.md)，新项目统一使用 `doc/` 默认映射，保留已有项目映射，路径集成及完整测试通过。

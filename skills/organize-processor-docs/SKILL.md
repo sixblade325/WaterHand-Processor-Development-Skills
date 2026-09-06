@@ -14,7 +14,7 @@ Build a directly editable Markdown document network that a processor designer ca
 
 1. Read the project `AGENTS.md` first.
 2. Treat explicit user decisions and the current Git authorities as authoritative. Treat a later user statement as change intent unless the user clearly supersedes an existing fact.
-3. Keep the current document network under one project-root `doc/`. Use one current `doc/Architecture/`, one current `doc/Design/`, and one current `doc/Verification/` when those domains contain real material. Use `doc/Research/` only when project-maintained research exists. Git keeps history. Research, Review, and Finding remain evidence rather than processor authority.
+3. For a new project without an established mapping, keep the current document network under one project-root `doc/`, matching `bootstrap-processor-project`. Use one current `doc/Architecture/`, one current `doc/Design/`, and one current `doc/Verification/` when those domains contain real material. Use `doc/Research/` only when project-maintained research exists. An existing project's approved mapping takes precedence. Git keeps history. Research, Review, and Finding remain evidence rather than processor authority.
 4. Give each normative fact one owning document. Summaries link to the owner and add no new normative detail.
 5. Keep Research, reference implementations, current RTL, current proposed documents, and new recommendations distinct.
 6. Do not introduce a document manifest, processor schema, renderer-owned truth, backup tree, or document workflow state.
@@ -25,6 +25,8 @@ Build a directly editable Markdown document network that a processor designer ca
 11. Use the physical module view in `doc/Design/` as the main directory axis. Align this view as closely as possible with stable Chisel or RTL instance hierarchy and responsibility boundaries. Keep Protocols, Lifecycles, ADRs, and Verification as orthogonal views linked to that axis.
 
 When detailed processor semantics are being designed or reviewed, also use `design-chisel-processor`. This skill owns information architecture and writing constraints; `design-chisel-processor` owns cycle-accurate correctness.
+
+All `doc/` paths in this skill and its references describe the default layout. For an established custom layout, resolve them through the project's mapping, including domain entries and the overall reading entry. Preserve that mapping, its authority files, and its local constraints. Do not silently rewrite `AGENTS.md` or create a parallel `doc/` tree. A migration requires authorization and coordinated updates to the mapping, documents, and links.
 
 ## Select a mode
 
