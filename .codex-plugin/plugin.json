@@ -1,6 +1,6 @@
 {
   "name": "processor-development-skills",
-  "version": "0.1.0",
+  "version": "3.0.3",
   "description": "Human-first processor architecture, Chisel implementation, verification, and FPGA timing skills for Codex.",
   "author": {
     "name": "Processor Agent Contributors"

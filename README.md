@@ -1,5 +1,11 @@
 # WaterHand Processor Development Skills
 
+<p align="center">
+  <img src="logo.png" alt="WaterHand Processor Development Skills" width="320">
+</p>
+
+当前版本：v3.0.3。
+
 面向 Codex 的处理器开发插件，提供项目协作、文档组织、微架构设计、Chisel 实现与验证、FPGA 时序分析的六项 Skill，以及配套的 Windows 工具脚本。
 
 适用于处理器课程项目、科研原型和已有 Chisel 工程的增量开发。你在自己的处理器项目中提出任务，Codex 根据项目文档和这些 Skill 开展设计、修改与验证，结果保存在该项目中。

@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -463,6 +464,7 @@ class ValidationAndPackagingTest(unittest.TestCase):
                 self.assertIn(".codex-plugin/plugin.json", names)
                 self.assertIn("PACKAGE_MANIFEST.json", names)
                 self.assertIn("scripts/initialize.cmd", names)
+                self.assertEqual(archive.read("logo.png"), (REPO_ROOT / "logo.png").read_bytes())
                 plugin = json.loads(archive.read(".codex-plugin/plugin.json"))
                 self.assertEqual(plugin["name"], "processor-development-skills")
                 self.assertEqual(plugin["license"], "MulanPSL-2.0")
@@ -518,6 +520,12 @@ class ValidationAndPackagingTest(unittest.TestCase):
             self.assertEqual(readme, (REPO_ROOT / "PACKAGE_README.md").read_text(encoding="utf-8"))
             self.assertNotEqual(readme, (REPO_ROOT / "README.md").read_text(encoding="utf-8"))
             self.assertFalse((extracted / "PACKAGE_README.md").exists())
+            image_sources = re.findall(r'<img\b[^>]*\bsrc="([^"]+)"', readme)
+            self.assertTrue(image_sources)
+            for source in image_sources:
+                image_path = (extracted / source).resolve()
+                self.assertEqual(image_path, extracted / "logo.png")
+                self.assertEqual(image_path.read_bytes(), (REPO_ROOT / "logo.png").read_bytes())
 
     def test_generated_marketplace_has_canonical_local_shape(self) -> None:
         with tempfile.TemporaryDirectory() as output_name:

@@ -1,5 +1,7 @@
 # 环境与工具链契约
 
+适用产品版本：v3.0.3。
+
 本目录定义 WaterHand Processor Development Skills 的纯 Windows 运行条件。它不保存处理器架构事实，也不复制用户项目的构建配置。
 
 ## Profile

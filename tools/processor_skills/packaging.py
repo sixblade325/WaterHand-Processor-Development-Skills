@@ -26,6 +26,7 @@ INCLUDED_ROOT_FILES = {
     "PACKAGE_README.md": "README.md",
     "USER_GUIDE.md": "USER_GUIDE.md",
     "LICENSE": "LICENSE",
+    "logo.png": "logo.png",
 }
 EXCLUDED_PARTS = {"__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache"}
 EXCLUDED_SUFFIXES = {".pyc", ".pyo", ".zip"}

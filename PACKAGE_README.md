@@ -1,5 +1,11 @@
 # WaterHand Processor Development Skills 交付包
 
+<p align="center">
+  <img src="logo.png" alt="WaterHand Processor Development Skills" width="320">
+</p>
+
+当前版本：v3.0.3。
+
 这是面向 Codex 的处理器开发插件，包含六项 Skill 和配套的 Windows 工具脚本。安装后，可在自己的处理器项目中使用 Codex 开展文档组织、微架构设计、Chisel 实现与验证、Vivado 时序分析和优化。
 
 本说明对应已经构建好的 ZIP。包版本、源码来源和文件校验值记录在 `PACKAGE_MANIFEST.json` 中。

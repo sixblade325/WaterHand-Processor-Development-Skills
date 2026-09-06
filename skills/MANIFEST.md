@@ -1,5 +1,7 @@
 # Processor Agent Skills
 
+适用版本：v3.0.3。
+
 Generated: 2026-09-03
 
 ## Available Skills
