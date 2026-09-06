@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import shutil
@@ -480,6 +481,43 @@ class ValidationAndPackagingTest(unittest.TestCase):
                 self.assertEqual(first["license"], plugin["license"])
                 self.assertEqual(package_manifest["payloadSha256"], first["payloadSha256"])
                 self.assertIsInstance(package_manifest["sourceDirty"], bool)
+                self.assertEqual(
+                    {item["path"] for item in package_manifest["files"]},
+                    names - {"PACKAGE_MANIFEST.json"},
+                )
+                for item in package_manifest["files"]:
+                    data = archive.read(item["path"])
+                    self.assertEqual(item["size"], len(data))
+                    self.assertEqual(item["sha256"], hashlib.sha256(data).hexdigest())
+
+    def test_extracted_package_is_a_self_contained_marketplace(self) -> None:
+        with tempfile.TemporaryDirectory() as root_name:
+            root = Path(root_name)
+            result = build_package(REPO_ROOT, root / "dist", allow_dirty=True)
+            extracted = root / "交付 包"
+            with zipfile.ZipFile(result["archive"]) as archive:
+                archive.extractall(extracted)
+
+            marketplace = json.loads(
+                (extracted / ".agents/plugins/marketplace.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(marketplace["name"], MARKETPLACE_NAME)
+            entry = marketplace["plugins"][0]
+            self.assertEqual(entry["source"]["source"], "local")
+            plugin_root = (extracted / entry["source"]["path"]).resolve()
+            self.assertEqual(plugin_root, extracted.resolve())
+            plugin = json.loads(
+                (plugin_root / ".codex-plugin/plugin.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(entry["name"], plugin["name"])
+            self.assertEqual(len(list((plugin_root / plugin["skills"]).glob("*/SKILL.md"))), 6)
+            self.assertFalse((extracted / ".git").exists())
+            self.assertFalse((extracted / "tests").exists())
+
+            readme = (extracted / "README.md").read_text(encoding="utf-8")
+            self.assertEqual(readme, (REPO_ROOT / "PACKAGE_README.md").read_text(encoding="utf-8"))
+            self.assertNotEqual(readme, (REPO_ROOT / "README.md").read_text(encoding="utf-8"))
+            self.assertFalse((extracted / "PACKAGE_README.md").exists())
 
     def test_generated_marketplace_has_canonical_local_shape(self) -> None:
         with tempfile.TemporaryDirectory() as output_name:

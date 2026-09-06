@@ -1,7 +1,7 @@
 # V3 产品缺陷
 
 状态：当前缺陷索引  
-日期：2026-09-04
+日期：2026-09-06
 
 本目录记录产品开发与实验中已经取得现场证据的通用缺陷。每份缺陷摘要只保存产品责任、复现证据、影响范围、目标行为和关闭条件。处理器候选的设计错误、实验组内部实现细节和未经核验的猜测不进入本目录。
 
@@ -23,3 +23,4 @@
 14. [PA3-DEFECT-015：异步 Memory 写回被错误绑定到实验完成](PA3-DEFECT-015-MEMORY-POST-WRITE-CLOSURE-COUPLING.md)，已修复并通过完整回归，run-003 已按 `session_read` 门禁封存。
 15. [PA3-DEFECT-016：已恢复的重连事件被误判为会话失败](PA3-DEFECT-016-RECOVERED-RECONNECT-MARKED-FATAL.md)，run-003 Control main 已复现，证据解析修复待实现。
 16. [PA3-DEFECT-017：零 idle Memory 初始化把摘要归因固定在错误会话](PA3-DEFECT-017-ZERO-IDLE-MEMORY-PROBE-RACE.md)，run-004 已使用隔离兼容封存继续运行，通用修复待实现。
+17. [PA3-DEFECT-018：中文交付包路径导致 Chisel 适配器编译失败](PA3-DEFECT-018-NON-ASCII-PACKAGE-RUNTIME-PATH.md)，按用户决定接受为已知限制，交付文档已声明完整 ASCII 包路径要求，不实施中文包路径适配。

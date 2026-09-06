@@ -24,6 +24,7 @@
 6. Vivado 由用户独立安装并配置许可证，产品只执行探测和固定命令。
 7. Chisel 7.14 当前支持基线使用 `firtool 1.155.0`。入口优先保留用户提供的 `CHISEL_FIRTOOL_PATH`，否则把依赖解析缓存中的无扩展名 PE 文件复制为包运行目录中的 `firtool.exe`。
 8. Windows PowerShell 读取 UTF-8 文档必须显式指定 `-Encoding utf8`，也可以使用 `scripts\read-text.cmd`。`doctor` 会验证包内中文 smoke 文件的严格 UTF-8 解码结果。
+9. 运行 Chisel 工具的包或源码仓库完整路径必须为 ASCII，包括所有父目录。中文及其他非 ASCII 包路径当前不受支持；包路径含英文空格已实测通过。该限制针对工具包位置，用户处理器项目路径仍由现有临时别名机制处理。解压要求见 [README.md](../README.md)。
 
 ## Chisel 子进程环境
 

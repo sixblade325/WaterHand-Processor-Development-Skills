@@ -22,7 +22,11 @@ INCLUDED_DIRECTORIES = (
     "environment",
     "scripts",
 )
-INCLUDED_ROOT_FILES = ("README.md", "USER_GUIDE.md", "LICENSE")
+INCLUDED_ROOT_FILES = {
+    "PACKAGE_README.md": "README.md",
+    "USER_GUIDE.md": "USER_GUIDE.md",
+    "LICENSE": "LICENSE",
+}
 EXCLUDED_PARTS = {"__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache"}
 EXCLUDED_SUFFIXES = {".pyc", ".pyo", ".zip"}
 TEXT_SUFFIXES = {
@@ -42,6 +46,24 @@ MARKETPLACE_NAME = "processor-development-skills-local"
 
 def _json_bytes(value: Any) -> bytes:
     return (json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n").encode("utf-8")
+
+
+def _local_marketplace(plugin_name: str, plugin_path: str) -> dict[str, Any]:
+    return {
+        "name": MARKETPLACE_NAME,
+        "interface": {"displayName": "WaterHand Processor Development Skills Local"},
+        "plugins": [
+            {
+                "name": plugin_name,
+                "source": {"source": "local", "path": plugin_path},
+                "policy": {
+                    "installation": "AVAILABLE",
+                    "authentication": "ON_INSTALL",
+                },
+                "category": "Developer Tools",
+            }
+        ],
+    }
 
 
 def _normalized_bytes(path: Path) -> bytes:
@@ -67,12 +89,12 @@ def _is_included_file(path: Path, base: Path) -> bool:
 def collect_payload(repo_root: Path) -> dict[str, bytes]:
     payload: dict[str, bytes] = {}
     missing: list[str] = []
-    for name in INCLUDED_ROOT_FILES:
-        path = repo_root / name
+    for source_name, package_name in INCLUDED_ROOT_FILES.items():
+        path = repo_root / source_name
         if not path.is_file():
-            missing.append(name)
+            missing.append(source_name)
         else:
-            payload[name] = _normalized_bytes(path)
+            payload[package_name] = _normalized_bytes(path)
     for name in INCLUDED_DIRECTORIES:
         directory = repo_root / name
         if not directory.is_dir():
@@ -169,6 +191,9 @@ def build_package(
         raise ValueError("working tree is dirty; commit the package inputs or pass --allow-dirty")
 
     payload = collect_payload(repo_root)
+    payload[".agents/plugins/marketplace.json"] = _json_bytes(
+        _local_marketplace(plugin_name, ".")
+    )
     payload_hash = _payload_digest(payload)
     package_manifest = {
         "schemaVersion": 1,
@@ -206,21 +231,7 @@ def build_package(
         marketplace_stage = temp_root / "marketplace"
         marketplace_plugin = marketplace_stage / "plugins" / plugin_name
         shutil.copytree(plugin_stage, marketplace_plugin)
-        marketplace = {
-            "name": MARKETPLACE_NAME,
-            "interface": {"displayName": "WaterHand Processor Development Skills Local"},
-            "plugins": [
-                {
-                    "name": plugin_name,
-                    "source": {"source": "local", "path": f"./plugins/{plugin_name}"},
-                    "policy": {
-                        "installation": "AVAILABLE",
-                        "authentication": "ON_INSTALL",
-                    },
-                    "category": "Developer Tools",
-                }
-            ],
-        }
+        marketplace = _local_marketplace(plugin_name, f"./plugins/{plugin_name}")
         marketplace_manifest = marketplace_stage / ".agents" / "plugins" / "marketplace.json"
         marketplace_manifest.parent.mkdir(parents=True, exist_ok=True)
         marketplace_manifest.write_bytes(_json_bytes(marketplace))

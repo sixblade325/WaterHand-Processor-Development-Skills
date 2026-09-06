@@ -2,7 +2,13 @@
 
 本产品采用木兰宽松许可证，第 2 版（`MulanPSL-2.0`），适用范围与再分发说明见 [README 的许可证章节](README.md#许可证)，完整条款见 [LICENSE](LICENSE)。本指南中的 Vivado 等工具许可证配置指对应外部工具的授权。
 
-## 1. 初始化
+## 1. 安装与初始化
+
+本指南同时随源码仓库和 ZIP 交付包提供。使用 ZIP 时，完整解压后按包内 [README.md](README.md) 注册本地 marketplace 并安装插件；这条路径直接安装已构建文件。
+
+运行 Chisel 工具时，包或源码仓库所在的完整路径及父目录必须使用 ASCII 字符，推荐 `E:\tools\waterhand`。中文及其他非 ASCII 包路径当前不受支持，会在原生适配器编译阶段失败。包路径含英文空格已实测通过；处理器项目目录含中文、空格或较长路径的测试已通过。
+
+以下一键初始化命令用于包含 Git 历史和 `tests/` 的源码仓库。
 
 在 Windows x86-64 的源码仓库根目录运行：
 
@@ -10,25 +16,25 @@
 .\scripts\initialize.cmd
 ```
 
-这是用户初始化的唯一一键入口。它完成环境预检、结构校验、工具测试、可复现构建和 Codex plugin 安装。脚本只把生成物写入 `.runtime/processor-development-skills/`，Codex 配置写入由明确执行该命令授权。
+这是源码仓库的一键初始化入口。它完成环境预检、结构校验、工具测试、可复现构建和 Codex plugin 安装。默认生成物目录为 `.runtime/processor-development-skills/`，Codex 配置写入由明确执行该命令授权。
 
-初始化成功后打开新的 Codex 会话。随后可以在目标处理器项目中调用 `$bootstrap-processor-project` 初始化项目级 `AGENTS.md`。
+插件安装成功后打开新的 Codex 会话。随后可以在目标处理器项目中调用 `$bootstrap-processor-project` 初始化项目级 `AGENTS.md`。
 
 ## 2. 命令
 
 | 命令 | 作用 | 外部状态 |
 |---|---|---|
 | `scripts\doctor.cmd` | 探测环境和工具版本 | 只读 |
-| `scripts\build.cmd` | 校验、测试并构建安装包 | 只写 `.runtime/` |
-| `scripts\initialize.cmd` | 执行 build 并安装本地 Codex plugin | 修改 Codex plugin 配置 |
+| `scripts\build.cmd` | 从源码校验、测试并构建安装包 | 写入构建输出目录 |
+| `scripts\initialize.cmd` | 从源码执行 build 并安装本地 Codex plugin | 写入构建输出及 Codex plugin 配置 |
 | `scripts\uninstall.cmd` | 移除插件和专用 marketplace | 修改 Codex plugin 配置 |
 | `scripts\run.cmd validate-skills` | 校验插件与全部 Skill | 只读 |
 | `scripts\run.cmd check-docs <root>` | 检查用户项目文档 | 只读 |
 | `scripts\read-text.cmd <path>` | 严格按 UTF-8 读取文本 | 只读 |
 | `scripts\chisel-run.cmd <root> -- <command>` | 在进程级 Chisel 工具链环境中执行命令 | 用户项目运行数据 |
-| `scripts\run.cmd test-tools` | 执行工具级测试 | 临时文件 |
+| `scripts\run.cmd test-tools` | 执行源码仓库中的工具级测试 | 临时文件 |
 
-所有入口最终调用同一个 Python CLI，并使用参数数组启动外部命令。
+表中脚本从源码仓库或包根目录调用，`build`、`initialize` 和 `test-tools` 要求完整源码仓库。所有脚本入口最终调用同一个 Python CLI，并使用参数数组启动外部命令。
 
 CMD 入口把原始 Windows 参数保存在当前进程环境中，不交给 PowerShell 重新解释。Python 入口通过 `CommandLineToArgvW` 解码一次，CLI 和子进程调用随后只使用参数数组。结构化 `chisel-run` 结果同时记录 `requestedCommand`、`resolvedCommand`、`launchedCommand` 和 `childExitCode`。
 
@@ -56,7 +62,7 @@ CMD 入口把原始 Windows 参数保存在当前进程环境中，不交给 Pow
 .\scripts\chisel-run.cmd E:\projects\my-cpu -- sbt -batch test
 ```
 
-该命令可以从任意当前目录调用。它为子进程设置 `PATH`、`VERILATOR_ROOT` 与 firtool 路径，并使用包内源码即时构建的 Windows `which` 和 Make 适配器。含空格、非 ASCII 字符或较长根路径的项目会在命令期间使用临时 `subst` ASCII 短路径别名，`CHISEL_PROJECT_ROOT` 将 svsim 生成目录绑定到该别名，结束后自动释放。父 PowerShell、用户环境和系统环境保持不变。结构化调用将 `--json` 放在项目路径前：
+示例从包或源码仓库根目录调用脚本。使用脚本的绝对路径时，可以从任意当前目录调用。它为子进程设置 `PATH`、`VERILATOR_ROOT` 与 firtool 路径，并使用包内源码即时构建的 Windows `which` 和 Make 适配器。含空格、非 ASCII 字符或较长根路径的项目会在命令期间使用临时 `subst` ASCII 短路径别名，`CHISEL_PROJECT_ROOT` 将 svsim 生成目录绑定到该别名，结束后自动释放。父 PowerShell、用户环境和系统环境保持不变。结构化调用将 `--json` 放在项目路径前：
 
 ```powershell
 .\scripts\run.cmd chisel-run --json E:\projects\my-cpu -- sbt -batch test
@@ -92,7 +98,7 @@ $env:PROCESSOR_SKILLS_VIVADO = "C:\Xilinx\Vivado\2025.1\bin\vivado.bat"
 
 ## 5. 构建
 
-正式构建要求 Git 工作树干净：
+本节用于源码仓库，要求包含 `tests/`、插件与 Skill 源文件。正式构建要求 Git 工作树干净：
 
 ```powershell
 .\scripts\build.cmd
@@ -225,7 +231,7 @@ Agent 会先读取目标项目中适用的 `AGENTS.md`。环境诊断、Chisel �
 先列出权威归属、目标路径和需要用户决定的冲突，再实施已确定的部分。
 ```
 
-涉及接口时，文档按 `Scala declaration -> semantics` 顺序解释。涉及周期精确的状态、握手、冲突优先级、flush、replay 或生命周期语义时，同时调用 `$design-chisel-processor`。修改完成后，可以从本产品源码仓库根目录运行：
+涉及接口时，文档按 `Scala declaration -> semantics` 顺序解释。涉及周期精确的状态、握手、冲突优先级、flush、replay 或生命周期语义时，同时调用 `$design-chisel-processor`。修改完成后，可以从本产品源码仓库或解压后的包根目录运行：
 
 ```powershell
 .\scripts\run.cmd check-docs E:\projects\my-cpu --json
