@@ -16,4 +16,10 @@
 7. [PA3-DEFECT-008：候选执行环境缺少验收工具替换门禁](PA3-DEFECT-008-VALIDATOR-TOOL-SHADOWING-GUARD.md)，已修复，run-003 独立验收通过。
 8. [PA3-DEFECT-009：独立组织者无法编译 Chisel verification layers](PA3-DEFECT-009-ORGANIZER-VERILATOR-INCLUDE-PATHS.md)，已修复，run-003 portable RTL snapshot 编译与仿真通过。
 9. [PA3-DEFECT-010：独立组织者未固定模拟器运行时 DLL 路径](PA3-DEFECT-010-ORGANIZER-SIMULATOR-RUNTIME-PATH.md)，已修复，run-003 独立模拟器与两个 CoreMark workload 通过。
-10. [PA3-DEFECT-011：organizer 冻结了易变且不可接受的原始 PATH](PA3-DEFECT-011-ORGANIZER-PATH-FREEZE-VOLATILITY.md)，run-003 隔离修复与完整验收通过，通用冻结器待收敛。
+10. [PA3-DEFECT-011：organizer 冻结了易变且不可接受的原始 PATH](PA3-DEFECT-011-ORGANIZER-PATH-FREEZE-VOLATILITY.md)，run-003 与 run-004 均以隔离修订完成验收，通用冻结器待收敛。
+11. [PA3-DEFECT-012：并发 Agent 争用全局 sbt boot lock](PA3-DEFECT-012-CONCURRENT-SBT-BOOT-LOCK.md)，run-003 已在 Skill 与 Control 两组复现，通用构建协调待实现。
+12. [PA3-DEFECT-013：文档任务未触发文档组织 Skill](PA3-DEFECT-013-DOCUMENTATION-SKILL-SELECTION-GAP.md)，run-003 已确认未读取文档组织 Skill 或运行其检查器，Skill 选择与门禁闭环待实现。
+13. [PA3-DEFECT-014：Codex 运行时状态触发 home inventory 误报](PA3-DEFECT-014-CODEX-HOME-RUNTIME-INVENTORY.md)，run-004 post 审计再次复现动态 plugin cache 误报，通用审计器待收敛。
+14. [PA3-DEFECT-015：异步 Memory 写回被错误绑定到实验完成](PA3-DEFECT-015-MEMORY-POST-WRITE-CLOSURE-COUPLING.md)，已修复并通过完整回归，run-003 已按 `session_read` 门禁封存。
+15. [PA3-DEFECT-016：已恢复的重连事件被误判为会话失败](PA3-DEFECT-016-RECOVERED-RECONNECT-MARKED-FATAL.md)，run-003 Control main 已复现，证据解析修复待实现。
+16. [PA3-DEFECT-017：零 idle Memory 初始化把摘要归因固定在错误会话](PA3-DEFECT-017-ZERO-IDLE-MEMORY-PROBE-RACE.md)，run-004 已使用隔离兼容封存继续运行，通用修复待实现。

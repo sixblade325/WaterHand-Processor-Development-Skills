@@ -1,5 +1,6 @@
 ---
 name: implement-chisel-processor
+license: MulanPSL-2.0
 description: Document-driven workflow for implementing, reviewing, and verifying Chisel processor and memory-subsystem RTL. Use when Codex must work from maintained Architecture and Design, trace a complete integration surface, reason in synthesized-hardware terms, keep source-adjacent _codex.md summaries current, avoid redundant or overprotective logic, or run focused functional verification.
 ---
 

@@ -1,5 +1,6 @@
 ---
 name: bootstrap-processor-project
+license: MulanPSL-2.0
 description: Initialize or safely upgrade a processor project's root AGENTS.md from a maintained baseline. Use when starting a processor project, adding project-level Agent collaboration rules, or comparing an existing AGENTS.md with the package baseline. This skill only handles AGENTS.md; it does not scaffold documentation, inspect or configure environments, install tools, or modify processor source.
 metadata:
   short-description: Bootstrap processor project rules

@@ -1,5 +1,6 @@
 ---
 name: trace-vivado-timing-to-rtl
+license: MulanPSL-2.0
 description: Task-sized forensic analysis of Vivado synthesis and routed timing evidence for processor RTL. Use when Codex must trace a named setup or hold path, audit whole-design timing populations, compare implementation runs, map primitive, LUT, CARRY, BRAM, DSP, MUXF, register, and routed-net stages back to Chisel or generated RTL, distinguish logic from routing pressure, identify missing DCP queries, or write an evidence-backed timing report. This skill is read-only by default and stops at ranked modification directions. Use optimize-chisel-fpga-timing for RTL edits and routed A/B implementation closure.
 ---
 

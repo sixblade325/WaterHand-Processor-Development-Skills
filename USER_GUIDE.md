@@ -1,4 +1,6 @@
-# Processor Development Skills 用户指南
+# WaterHand Processor Development Skills 用户指南
+
+本产品采用木兰宽松许可证，第 2 版（`MulanPSL-2.0`），适用范围与再分发说明见 [README 的许可证章节](README.md#许可证)，完整条款见 [LICENSE](LICENSE)。本指南中的 Vivado 等工具许可证配置指对应外部工具的授权。
 
 ## 1. 初始化
 

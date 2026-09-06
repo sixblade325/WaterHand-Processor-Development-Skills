@@ -1,5 +1,6 @@
 ---
 name: design-chisel-processor
+license: MulanPSL-2.0
 description: Develop, challenge, and document Chisel processor microarchitecture designs before implementation. Use when discussing or writing design documents for processor pipelines, queues, issue logic, rename, ROB, LSU, caches, MSHRs, forwarding, wakeup, replay, flush, privilege, exceptions, or other cycle-accurate hardware mechanisms; when converting design conversations into stable Markdown specifications; or when reviewing a proposed Chisel CPU design for correctness, timing, area, verification cost, and cross-document consistency.
 ---
 

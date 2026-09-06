@@ -137,13 +137,13 @@ def _build(
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="processor-skills",
-        description="Windows-native execution support for Processor Development Skills.",
+        description="Windows-native execution support for WaterHand Processor Development Skills.",
     )
     parser.add_argument(
         "--repo-root",
         type=Path,
         default=repository_root(),
-        help="Processor Development Skills source root.",
+        help="WaterHand Processor Development Skills source root.",
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 

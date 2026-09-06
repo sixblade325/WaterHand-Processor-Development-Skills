@@ -60,7 +60,7 @@ run-001 曾出现同类日志，因此该现象具有重复性。
 
 1. Memory 状态拆分为 `configured`、`initialized`、`session_read` 和 `post_write`，每个状态都有独立证据门禁。
 2. `prepare` 从同一空 `MEMORY.md` 建立 probe、Skill 与 Control 三个独立可写 home，冻结 config、规则、认证外公共 inventory 和全部证据路径。
-3. initialization 使用两个真实持久 Codex session。seed 生成摘要，满足一小时 idle 后由不同 trigger session 验证摘要已在第一条用户消息前注入。
+3. initialization 使用两个真实持久 Codex session。seed 生成摘要，退出后由不同 trigger session 验证摘要已在第一条用户消息前注入。实验不再人为增加一小时 idle 门禁。
 4. `finalize` 校验两个 session 的 thread ID、rollout、prompt、identity、启动参数、时间顺序、memory inventory、摘要生成和摘要读取证据，再把同一摘要原始字节复制给两组。
 5. 正式 main 启动前重验 initialized 起点，pre 审计要求达到 `initialized`。正式 main 与后续 trigger 分别提供 `session_read` 与 `post_write` 证据。
 6. Memory 专用最小规则允许内部 Memory Agent 读取确定性 workspace diff 和只读文件清单，不开放处理器工程写权限。

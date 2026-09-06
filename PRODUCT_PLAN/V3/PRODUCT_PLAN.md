@@ -27,7 +27,11 @@ Processor Agent V3 的产品单位是可安装、可组合、可验证的处理�
 
 ## 3. 产品定义
 
-> Processor Development Skills 是一组面向处理器工程的认知方法包。它指导通用 Agent 接管高认知消耗、可重复、可检查的工程工作，并让处理器设计师持续拥有架构判断、设计事实和最终批准权。
+正式产品名为 `WaterHand Processor Development Skills`。用户可见的产品标题、插件展示名、命令帮助和发布材料统一使用此名称。插件 ID `processor-development-skills`、Skill 名称、命令、环境变量与已有文件路径保持兼容。
+
+产品统一采用木兰宽松许可证，第 2 版（`MulanPSL-2.0`）。条款以根目录 [LICENSE](../../LICENSE) 为准，适用范围见 [README 的许可证章节](../../README.md#许可证)。
+
+> WaterHand Processor Development Skills 是一组面向处理器工程的认知方法包。它指导通用 Agent 接管高认知消耗、可重复、可检查的工程工作，并让处理器设计师持续拥有架构判断、设计事实和最终批准权。
 
 产品依赖现有 Agent Runtime 提供会话、上下文、工具调用、文件编辑和任务执行能力。当前首要运行宿主为 Codex。
 
@@ -108,7 +112,7 @@ Skill 可以发现缺口、构造反例、比较候选和请求决定。Skill �
 ## 6. 当前 Skill 体系
 
 ```text
-Processor Development Skill Package
+WaterHand Processor Development Skills
 ├── bootstrap-processor-project
 ├── organize-processor-docs
 ├── design-chisel-processor

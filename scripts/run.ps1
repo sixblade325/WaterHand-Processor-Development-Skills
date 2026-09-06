@@ -36,7 +36,7 @@ foreach ($Launcher in $Launchers) {
 }
 
 if ($null -eq $Selected) {
-    [Console]::Error.WriteLine("Processor Development Skills requires Python 3.10 or newer.")
+    [Console]::Error.WriteLine("WaterHand Processor Development Skills requires Python 3.10 or newer.")
     exit 2
 }
 
@@ -45,11 +45,11 @@ try {
     $ChildExitCode = $LASTEXITCODE
 }
 catch {
-    [Console]::Error.WriteLine("Processor Development Skills launcher failed: $($_.Exception.Message)")
+    [Console]::Error.WriteLine("WaterHand Processor Development Skills launcher failed: $($_.Exception.Message)")
     exit 4
 }
 if ($null -eq $ChildExitCode) {
-    [Console]::Error.WriteLine("Processor Development Skills launcher did not receive a child exit code.")
+    [Console]::Error.WriteLine("WaterHand Processor Development Skills launcher did not receive a child exit code.")
     exit 4
 }
 exit ([int]$ChildExitCode)

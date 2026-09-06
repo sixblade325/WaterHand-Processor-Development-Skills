@@ -6,6 +6,8 @@ Generated: 2026-09-03
 
 Each directory contains a `SKILL.md` entrypoint.
 
+本清单中的全部 Skill 采用木兰宽松许可证，第 2 版（`MulanPSL-2.0`）。许可证全文见仓库根目录 [LICENSE](../LICENSE)；每个 Skill 的 frontmatter 同步声明该标识。
+
 - `bootstrap-processor-project`
 - `design-chisel-processor`
 - `implement-chisel-processor`

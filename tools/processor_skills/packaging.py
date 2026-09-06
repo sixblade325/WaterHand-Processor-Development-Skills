@@ -174,6 +174,7 @@ def build_package(
         "schemaVersion": 1,
         "pluginName": plugin_name,
         "version": version,
+        "license": plugin["license"],
         "sourceCommit": commit,
         "sourceDirty": dirty,
         "payloadSha256": payload_hash,
@@ -207,7 +208,7 @@ def build_package(
         shutil.copytree(plugin_stage, marketplace_plugin)
         marketplace = {
             "name": MARKETPLACE_NAME,
-            "interface": {"displayName": "Processor Development Skills Local"},
+            "interface": {"displayName": "WaterHand Processor Development Skills Local"},
             "plugins": [
                 {
                     "name": plugin_name,
@@ -232,6 +233,7 @@ def build_package(
         "ok": True,
         "pluginName": plugin_name,
         "version": version,
+        "license": plugin["license"],
         "sourceCommit": commit,
         "sourceDirty": dirty,
         "payloadSha256": payload_hash,

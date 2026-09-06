@@ -33,7 +33,7 @@ session ordinals: 5364, 5371, 5375, 5377
 1. 独立验收在候选工作树之外运行，并使用组织者冻结的绝对工具路径和文件 hash。
 2. 允许的环境 override 采用白名单，名称、目标路径、版本和 hash 写入运行配置。
 3. 最终验收前记录 PATH、Git、Java、sbt、Verilator、C++ 和 Make 的实际解析路径与 hash。
-4. Processor Development Skills 明确禁止替换完整性工具或拦截验收查询。
+4. WaterHand Processor Development Skills 明确禁止替换完整性工具或拦截验收查询。
 5. 冻结验收器自身失败时，结果分类为 `infrastructure_failure`，保留候选的内部仿真结果，不伪装成候选通过或失败。
 
 ## 关闭条件

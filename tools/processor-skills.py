@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Stable script entrypoint for Processor Development Skills."""
+"""Stable script entrypoint for WaterHand Processor Development Skills."""
 
 from __future__ import annotations
 

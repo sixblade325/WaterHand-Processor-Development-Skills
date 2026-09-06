@@ -56,6 +56,7 @@ def validate_plugin_manifest(repo_root: Path) -> list[str]:
     name = _require_string(manifest, "name", errors, "plugin")
     version = _require_string(manifest, "version", errors, "plugin")
     _require_string(manifest, "description", errors, "plugin")
+    _require_string(manifest, "license", errors, "plugin")
     if name and not PLUGIN_NAME_RE.fullmatch(name):
         errors.append("plugin.name has an invalid identifier")
     if version and not SEMVER_RE.fullmatch(version):

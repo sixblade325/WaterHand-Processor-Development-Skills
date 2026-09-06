@@ -1,6 +1,6 @@
 # PA3-DEFECT-011：organizer 冻结了易变且不可接受的原始 PATH
 
-状态：run-003 隔离修复已验证，通用冻结器待收敛，不阻塞本轮实验  
+状态：run-003 与 run-004 隔离修复已验证，通用冻结器待收敛
 发现日期：2026-09-04  
 来源：`dual_issue_demo_V2` run-003 启动前独立组织者验收
 
@@ -45,6 +45,33 @@ organizer_input_path_actual_reparse_point: C:\Program Files\Common Files\Oracle\
 4. 修订只改变 organizer 工具链绑定。Memory 输入、两组 prompt、两组 repository 和 Skill Package 均保持不变。
 5. 修订记录位于 `E:\107\.runtime\dual_issue_demo_V2\run-003\evidence\run-config-organizer-path-amendment.json`。
 6. 修订后的独立组织者完整验收通过。
+
+## run-004 复现与隔离修复
+
+run-004 于 2026-09-05 再次从调用进程复制完整 PATH，原始配置包含新的 Codex `arg0` 临时目录和 Oracle `javapath` reparse point。原始外层 `RUN_CONFIG` SHA-256 为：
+
+```text
+a21d1f31d771ae3db95a9a757860b81370918289a68a1ed796d8c97144a17e64
+```
+
+Skill 主会话完成后，实验管理器在 Control 启动前执行与 run-003 相同的隔离修订。修订只更新 organizer 工具链绑定，Memory、两组 prompt、两组 repository 和 Skill Package 均未改变。稳定 PATH 仍限定为 Windows 系统目录、JDK、Git、sbt、MSYS2 UCRT64 和 MSYS2 user bin。
+
+修订后的绑定为：
+
+```text
+RUN_CONFIG              2af8ca26e1634fae7bfad63bd53cb69693d4d6878060cdfcb5add4ae11f9d3fc
+organizer run config    75ea76ed51abe385c5fdb92dad7e537e0eb1f6683444be149972e86cb1a6597e
+frozen tool policy      422cd8281c631a7be50096817d88e41ce0a0431549048f2595e5a03949a29526
+```
+
+独立 organizer 随后对 Skill 候选提交 `a5d15e7e4881898b6d8fa752eb0075e1d156efce` 完成 RTL 生成、Verilator 构建、13 个定向用例和两个 CoreMark workload，验收通过。现场证据位于：
+
+```text
+E:\107\.runtime\dual_issue_demo_V2\run-004\evidence\run-config-organizer-path-amendment.json
+E:\107\.runtime\dual_issue_demo_V2\run-004\outputs\organizer-eval-skill-001\results\organizer-result.json
+```
+
+run-004 的再次复现说明通用 `freeze-tools` 尚未满足关闭条件。
 
 ## 通用关闭条件
 

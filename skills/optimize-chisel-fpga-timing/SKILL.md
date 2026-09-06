@@ -1,5 +1,6 @@
 ---
 name: optimize-chisel-fpga-timing
+license: MulanPSL-2.0
 description: Diagnose and optimize timing-critical Chisel RTL for FPGA implementation while preserving cycle semantics. Use for Vivado timing bottlenecks, long ready or admission paths, queue and issue selection, free-list bank mapping, priority encoders, one-hot arbitration, wide muxes, late-arriving forwarding or override data, high-fanout controls, cross-module predicates, register-boundary changes, emitted-Verilog inspection, or routed-DCP A/B analysis. Also use when a source-level simplification needs proof that it changes timing without changing architectural state.
 ---
 

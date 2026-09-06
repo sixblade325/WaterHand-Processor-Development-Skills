@@ -1,5 +1,6 @@
 ---
 name: organize-processor-docs
+license: MulanPSL-2.0
 description: Establish, author, restructure, or audit human-first processor Architecture, Design, Research, Review, and Verification documentation. Use for progressive documentation scaffolding, authority maps, reading paths, document-type content contracts, length-budgeted splitting, or maintainability reviews. Do not use as a substitute for cycle-accurate microarchitecture analysis or RTL implementation.
 metadata:
   short-description: Organize concise processor documentation

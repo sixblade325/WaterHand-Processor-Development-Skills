@@ -5,7 +5,7 @@
 
 ## 1. 文档职责
 
-本文定义 Processor Development Skill Package 的 A/B 实验，用于评估 Skill Package 对 Codex 处理器工程团队完成效果、实现带宽和设计质量的影响。
+本文定义 WaterHand Processor Development Skills 的 A/B 实验，用于评估 Skill Package 对 Codex 处理器工程团队完成效果、实现带宽和设计质量的影响。
 
 本文服从 [V3 产品计划](PRODUCT_PLAN.md)。实验复用 [V1 Stage1](../V1/STAGE1.md) 的处理器目标与内部 Architecture 作为相同起点，不复用 V1 Harness、状态机和运行状态。
 
@@ -13,7 +13,7 @@
 
 ## 2. 核心假设
 
-在相同起点、处理器对外行为、CoreMark workload、模型、工具和执行预算下，使用 Processor Development Skill Package 的 Codex 团队应当表现出：
+在相同起点、处理器对外行为、CoreMark workload、模型、工具和执行预算下，使用 WaterHand Processor Development Skills 的 Codex 团队应当表现出：
 
 1. 更高的正确完成率。
 2. 更完整的 Architecture、Design、Source、Test 和 Evidence 闭环。
@@ -89,7 +89,7 @@ Control Team 获得公共仓库、统一任务、通用 Codex 能力、公共 me
 
 ### 5.2 Skill Team
 
-Skill Team 获得 Control Team 的全部输入，并可使用冻结版本的完整 Processor Development Skill Package。Skill Team 不获得额外项目事实、测试答案、预算或人工提示。
+Skill Team 获得 Control Team 的全部输入，并可使用冻结版本的完整 WaterHand Processor Development Skills。Skill Team 不获得额外项目事实、测试答案、预算或人工提示。
 
 ### 5.3 独立评估者
 

@@ -41,7 +41,7 @@ from processor_skills.textio import (
     inspect_utf8_text,
     read_utf8_text,
 )
-from processor_skills.validation import validate_repository
+from processor_skills.validation import validate_plugin_manifest, validate_repository
 
 
 class ContractAndDoctorTest(unittest.TestCase):
@@ -407,6 +407,34 @@ class ArgumentTransportTest(unittest.TestCase):
 
 
 class ValidationAndPackagingTest(unittest.TestCase):
+    def test_missing_plugin_license_is_rejected(self) -> None:
+        plugin = json.loads(
+            (REPO_ROOT / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8")
+        )
+        del plugin["license"]
+        with tempfile.TemporaryDirectory() as root_name:
+            root = Path(root_name)
+            manifest = root / ".codex-plugin" / "plugin.json"
+            manifest.parent.mkdir()
+            manifest.write_text(json.dumps(plugin), encoding="utf-8")
+            self.assertIn(
+                "plugin.license must be a non-empty string",
+                validate_plugin_manifest(root),
+            )
+
+    def test_product_and_skills_declare_mulan_license(self) -> None:
+        plugin = json.loads(
+            (REPO_ROOT / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(plugin["license"], "MulanPSL-2.0")
+        license_text = (REPO_ROOT / "LICENSE").read_text(encoding="utf-8")
+        self.assertIn("木兰宽松许可证", license_text)
+        self.assertIn("Mulan Permissive Software License", license_text)
+        for skill in (REPO_ROOT / "skills").glob("*/SKILL.md"):
+            with self.subTest(skill=skill.parent.name):
+                frontmatter = skill.read_text(encoding="utf-8").split("---", 2)[1]
+                self.assertIn(f"license: {plugin['license']}", frontmatter.splitlines())
+
     def test_repository_structure_is_valid(self) -> None:
         report = validate_repository(REPO_ROOT)
         self.assertTrue(report["ok"], report["errors"])
@@ -434,12 +462,22 @@ class ValidationAndPackagingTest(unittest.TestCase):
                 self.assertIn(".codex-plugin/plugin.json", names)
                 self.assertIn("PACKAGE_MANIFEST.json", names)
                 self.assertIn("scripts/initialize.cmd", names)
+                plugin = json.loads(archive.read(".codex-plugin/plugin.json"))
+                self.assertEqual(plugin["name"], "processor-development-skills")
+                self.assertEqual(plugin["license"], "MulanPSL-2.0")
+                self.assertEqual(archive.read("LICENSE"), (REPO_ROOT / "LICENSE").read_bytes())
+                self.assertEqual(
+                    plugin["interface"]["displayName"],
+                    "WaterHand Processor Development Skills",
+                )
                 self.assertFalse(any(name.startswith("PRODUCT_PLAN/") for name in names))
                 self.assertFalse(any(name.startswith("Logs/") for name in names))
                 self.assertFalse(any(name.startswith("tests/") for name in names))
                 self.assertFalse(any(name.endswith(".zip") for name in names))
 
                 package_manifest = json.loads(archive.read("PACKAGE_MANIFEST.json"))
+                self.assertEqual(package_manifest["license"], plugin["license"])
+                self.assertEqual(first["license"], plugin["license"])
                 self.assertEqual(package_manifest["payloadSha256"], first["payloadSha256"])
                 self.assertIsInstance(package_manifest["sourceDirty"], bool)
 
@@ -455,6 +493,10 @@ class ValidationAndPackagingTest(unittest.TestCase):
                 ).read_text(encoding="utf-8")
             )
             self.assertEqual(marketplace["name"], MARKETPLACE_NAME)
+            self.assertEqual(
+                marketplace["interface"]["displayName"],
+                "WaterHand Processor Development Skills Local",
+            )
             entry = marketplace["plugins"][0]
             self.assertEqual(entry["source"]["source"], "local")
             self.assertEqual(
@@ -651,7 +693,7 @@ class EntrypointTest(unittest.TestCase):
         smoke = REPO_ROOT / "environment" / "utf8-smoke.txt"
         self.assertEqual(
             smoke.read_text(encoding="utf-8-sig"),
-            "Processor Development Skills UTF-8 smoke: 处理器文档\n",
+            "WaterHand Processor Development Skills UTF-8 smoke: 处理器文档\n",
         )
 
     def test_check_docs_supports_unicode_project_root(self) -> None:

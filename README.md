@@ -1,6 +1,6 @@
-# Processor Development Skills
+# WaterHand Processor Development Skills
 
-Processor Development Skills 是面向 Codex 的处理器工程 Skill Package。它覆盖处理器项目初始化、文档组织、周期精确设计、Chisel 实现与验证、Vivado 时序追踪和 FPGA 时序优化。
+WaterHand Processor Development Skills 是面向 Codex 的处理器工程 Skill Package。它覆盖处理器项目初始化、文档组织、周期精确设计、Chisel 实现与验证、Vivado 时序追踪和 FPGA 时序优化。
 
 产品依赖 Codex 提供会话、文件编辑、工具调用和 Agent 执行能力。项目自身只提供领域 Skill 与薄执行支撑，不维护 Harness、Stage、Task、Run 或第二份处理器模型。
 
@@ -85,7 +85,7 @@ MSYS2 UCRT64 只作为 Windows 内部的 Verilator、C++ 和 Make 工具链。�
 ## 正式 Skill
 
 ```text
-Processor Development Skill Package
+WaterHand Processor Development Skills
 ├── bootstrap-processor-project
 ├── organize-processor-docs
 ├── design-chisel-processor
@@ -143,6 +143,8 @@ ZIP 使用固定文件顺序、固定时间戳、UTF-8 与 LF 文本规范化。
 
 该命令移除本产品的本地插件和专用 marketplace，不清理源码仓库或 `.runtime/` 构建产物。
 
-## License
+## 许可证
 
-当前仓库采用保留全部权利的临时发布边界。公开分发前需要由项目所有者确认最终许可证。
+除另有标注的第三方材料外，本仓库的代码、Skill、模板和文档统一采用木兰宽松许可证，第 2 版（Mulan PSL v2，SPDX：`MulanPSL-2.0`），全文见 [LICENSE](LICENSE)。
+
+再分发时应附带许可证副本，并保留现有版权、商标、专利及免责声明。外部工具和用户处理器项目的许可证由各自权利人及项目文件确定。

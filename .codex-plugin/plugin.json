@@ -6,7 +6,7 @@
     "name": "Processor Agent Contributors"
   },
   "repository": "https://github.com/sixblade325/processor_agent",
-  "license": "Proprietary",
+  "license": "MulanPSL-2.0",
   "keywords": [
     "processor",
     "chisel",
@@ -16,7 +16,7 @@
   ],
   "skills": "./skills/",
   "interface": {
-    "displayName": "Processor Development Skills",
+    "displayName": "WaterHand Processor Development Skills",
     "shortDescription": "Human-first processor design and Chisel engineering workflows.",
     "longDescription": "A composable Skill Package for processor architecture, documentation, cycle-accurate Chisel design, implementation, verification, and Vivado timing analysis.",
     "developerName": "Processor Agent Contributors",

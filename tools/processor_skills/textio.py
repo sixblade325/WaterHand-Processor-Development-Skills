@@ -7,7 +7,7 @@ from typing import Any
 
 
 UTF8_BOM = b"\xef\xbb\xbf"
-UTF8_SMOKE_TEXT = "Processor Development Skills UTF-8 smoke: 处理器文档\n"
+UTF8_SMOKE_TEXT = "WaterHand Processor Development Skills UTF-8 smoke: 处理器文档\n"
 
 
 class Utf8DecodeError(ValueError):
