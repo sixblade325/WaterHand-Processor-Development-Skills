@@ -1,7 +1,7 @@
 # Processor Agent V3 产品计划
 
 状态：当前产品判断基线  
-日期：2026-09-02
+日期：2026-10-03
 
 产品版本：v3.0.3。
 
@@ -10,6 +10,8 @@
 本文定义 Processor Agent V3 的产品定位、核心抽象、职责边界、Skill 组织方式和近期交付目标。
 
 V3 将产品收敛为面向处理器工程的 Skill Package。`PRODUCT_PLAN/V2/` 保留为 Harness 方向的历史讨论材料，不再指导当前实现。
+
+2026-10-03 用户决定移除 Windows Execution Support Kit，并明确六项 Skill 的设计已经完备。本次调整保持六项 Skill 设计及其必要脚本，现有 Codex plugin manifest 继续保留。具体移除范围、工具职责与历史材料处理见 [可运行产品与实验资产边界](RUNNABLE_PRODUCT_AND_EXPERIMENT_BOUNDARY.md)。本次边界调整沿用现有版本标记。
 
 ## 2. 核心判断
 
@@ -29,7 +31,7 @@ Processor Agent V3 的产品单位是可安装、可组合、可验证的处理�
 
 ## 3. 产品定义
 
-正式产品名为 `WaterHand Processor Development Skills`。用户可见的产品标题、插件展示名、命令帮助和发布材料统一使用此名称。插件 ID `processor-development-skills`、Skill 名称、命令、环境变量与已有文件路径保持兼容。
+正式产品名为 `WaterHand Processor Development Skills`。用户可见的产品标题、插件展示名和发布材料统一使用此名称。插件 ID `processor-development-skills` 和六项 Skill 名称保持不变。
 
 产品统一采用木兰宽松许可证，第 2 版（`MulanPSL-2.0`）。条款以根目录 [LICENSE](../../LICENSE) 为准，适用范围见 [README 的许可证章节](../../README.md#许可证)。
 
@@ -44,11 +46,10 @@ Processor Agent V3 的产品单位是可安装、可组合、可验证的处理�
 3. 输入、输出与权限边界。
 4. 典型缺陷、反例和检查项。
 5. 文档、实现、Review 和证据的质量标准。
-6. 环境与工具链契约。
-7. `doctor`、固定工具入口和确定性检查脚本。
-8. Codex plugin manifest、可复现安装包和工具级测试。
+6. Skill 自带的必要参考材料和确定性脚本。
+7. 暂留的 Codex plugin manifest。
 
-当前产品环境固定为纯 Windows x86-64。MSYS2 UCRT64 只作为 Windows 内部工具链，不形成 WSL 或 Linux 运行环境。
+具体开发环境、工具链、命令入口和运行产物位置由用户项目及其已有约定维护。各 Skill 按任务使用项目已声明的工具入口和适用的必要脚本。
 
 ## 4. 职责边界
 
@@ -76,7 +77,7 @@ Codex 等通用 Agent Runtime 负责：
 
 ### 4.3 Skill Package
 
-Skill Package 负责定义 Agent 完成处理器工程任务的方法，并提供降低重复工具探索成本的薄执行支撑。它不保存项目专属事实，不维护长期工作流状态。
+Skill Package 负责定义 Agent 完成处理器工程任务的方法，并随 Skill 保留必要参考材料和确定性脚本。它不保存项目专属事实，不维护长期工作流状态。
 
 ### 4.4 用户项目
 
@@ -89,13 +90,13 @@ Source
 Verification
 ```
 
-项目的 `AGENTS.md` 定义本地协作约束。项目文档、源码和测试共同提供当前处理器事实，Skill 不生成第二份处理器模型。
+项目的 `AGENTS.md` 定义本地协作约束。项目文档、源码和测试共同提供当前处理器事实，Skill 不生成第二份处理器模型。具体环境、工具链及构建、测试、仿真和综合入口由用户项目维护。
 
 ### 4.5 确定性工具
 
-编译器、测试框架、仿真器、综合工具和静态检查器负责产生原始工程证据。Skill Package 的 `Execution Support Kit` 负责环境探测、固定命令入口、运行产物管理和结构化结果。Agent 负责选择操作并解释证据，设计师负责作出取舍。
+编译器、测试框架、仿真器、综合工具和静态检查器负责产生原始工程证据。用户项目的既有工具和脚本承担环境探测、命令执行、运行产物管理和结果输出。Agent 负责选择操作并解释证据，设计师负责作出取舍。
 
-执行支撑层不决定任务，不调度 Agent，不维护 Stage、Task、Run 或 Approval 状态。详细边界见 [可运行产品与实验资产边界](RUNNABLE_PRODUCT_AND_EXPERIMENT_BOUNDARY.md)。
+Skill 自带的必要脚本服务于其方法中的确定性处理。详细边界见 [可运行产品与实验资产边界](RUNNABLE_PRODUCT_AND_EXPERIMENT_BOUNDARY.md)。
 
 ## 5. Skill 的纳入标准
 
@@ -125,7 +126,7 @@ WaterHand Processor Development Skills
 
 ### 6.1 `bootstrap-processor-project`
 
-使用包内固定基线初始化用户项目根目录的 `AGENTS.md`。已有文件只形成增量建议，并在用户确认后修改。写入后由用户项目维护，后续包版本不自动覆盖。该 Skill 不创建文档目录，不探测或配置环境，不修改处理器源码。环境与工具链工作由确定性脚本承担。
+使用包内固定基线初始化用户项目根目录的 `AGENTS.md`。已有文件只形成增量建议，并在用户确认后修改。写入后由用户项目维护，后续包版本不自动覆盖。该 Skill 不创建文档目录，不探测或配置环境，不修改处理器源码。环境与工具链工作由用户项目已有工具和确定性脚本承担。
 
 基线只常驻事实权威、授权、目录映射、正式工具入口和任务 Skill 索引。硬件设计、实现、验证细则由对应 Skill 按需提供，通用基线不复制个人化输出风格。包内基线的体积约束由 [bootstrap Skill](../../skills/bootstrap-processor-project/SKILL.md) 维护。新项目默认映射与文档组织 Skill 一致；已有项目使用其已确认映射，迁移时同步更新项目规则、文档和链接。
 
@@ -211,29 +212,18 @@ V3 当前不建设：
 processor-development-skills/
 ├── .codex-plugin/
 ├── README.md
+├── USER_GUIDE.md
 ├── LICENSE
-├── skills/
-├── tools/
-├── environment/
-├── scripts/
-└── tests/
+└── skills/
 ```
 
-当前可运行产品仍需完成：
-
-1. Codex plugin manifest。
-2. 环境与工具链契约。
-3. `doctor` 和固定工具入口。
-4. 可复现安装包。
-5. 工具级测试。
-
-用户初始化必须提供一个 Windows 一键命令。该命令连续完成环境预检、产品校验、工具级测试、可复现构建和 Codex plugin 安装。
+六项 Skill 设计已经完备，本次调整保持其职责、方法和必要配套材料。Codex plugin manifest 暂留。根目录 `tools/`、`scripts/`、`environment/` 及 Windows Execution Support Kit 对应测试、打包和安装入口移出当前产品。
 
 Skill 行为 eval、最小处理器示例和 A/B 对照演示属于实验资产，不构成产品运行条件。详细交付边界和验收见 [可运行产品与实验资产边界](RUNNABLE_PRODUCT_AND_EXPERIMENT_BOUNDARY.md)。
 
 ## 11. 实验性演示闭环
 
-可运行产品完成后，实验工作展示一条完整处理器开发链：
+实验工作独立展示一条完整处理器开发链：
 
 ```text
 读取 Architecture 和 Design
@@ -250,20 +240,17 @@ Skill 行为 eval、最小处理器示例和 A/B 对照演示属于实验资产�
 
 ## 12. 验收标准
 
-1. 新用户可以按照 `README.md` 在 Windows 上运行一个命令完成 Skill Package 的检查、构建和安装。
-2. Codex 可以发现并调用全部正式 Skill。
-3. `doctor` 可以报告环境、工具版本和缺失项。
-4. Skill 依赖的重复性工程命令具有固定入口和明确退出状态。
-5. 安装包可以从固定 Git commit 可复现构建并校验内容 hash。
-6. 工具级测试全部通过。
-7. 全新 Agent 会话可以依据项目文件和 Skill 开始任务。
-8. 删除 Agent 会话历史后，项目事实仍然完整。
-9. 用户可以直接修改 Architecture、Design、Source 和 Verification。
-10. Skill 不覆盖用户确认的架构选择。
-11. 文档、设计、实现、Review 和时序 Skill 的职责边界清晰。
-12. Skill Package 不依赖项目专属模块名、路径或处理器拓扑。
-13. 删除实验资产后，产品仍能安装、检查环境并调用 Skill。
-14. 作品贡献可以与 Codex、Vivado、Chisel 等外部依赖明确区分。
+1. Codex 可以发现并调用全部正式 Skill。
+2. 每项 Skill 的入口、必要参考材料和自带脚本完整，相关链接有效。
+3. 全新 Agent 会话可以依据项目文件和 Skill 开始任务。
+4. 删除 Agent 会话历史后，项目事实仍然完整。
+5. 用户可以直接修改 Architecture、Design、Source 和 Verification。
+6. Skill 不覆盖用户确认的架构选择。
+7. 文档、设计、实现、Review 和时序 Skill 的职责边界清晰。
+8. Skill Package 不依赖项目专属模块名、路径或处理器拓扑。
+9. 删除实验资产后，产品仍能调用 Skill。
+10. 工程命令使用用户项目已声明的入口，运行结果和验证范围有明确证据。
+11. 作品贡献可以与 Codex、Vivado、Chisel 等外部依赖明确区分。
 
 ## 13. 从 V2 到 V3
 
@@ -281,4 +268,4 @@ V2 的 Harness 设计停止进入当前产品实现。相关文档保留，用�
 
 ## 14. 一句话产品定义
 
-> Processor Agent V3 通过可复用、可检查的处理器开发 Skill 和薄执行支撑工具，让通用 Agent 接管重复且高认知消耗的工程工作，使设计师集中完成架构判断并扩大实现带宽。
+> Processor Agent V3 通过可复用、可检查的处理器开发 Skill，让通用 Agent 接管重复且高认知消耗的工程工作，使设计师集中完成架构判断并扩大实现带宽。

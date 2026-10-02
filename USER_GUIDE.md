@@ -2,180 +2,27 @@
 
 适用版本：v3.0.3。
 
-本产品采用木兰宽松许可证，第 2 版（`MulanPSL-2.0`），适用范围与再分发说明见 [README 的许可证章节](README.md#许可证)，完整条款见 [LICENSE](LICENSE)。本指南中的 Vivado 等工具许可证配置指对应外部工具的授权。
+本产品采用木兰宽松许可证，第 2 版（`MulanPSL-2.0`），适用范围与再分发说明见 [README 的许可证章节](README.md#许可证)，完整条款见 [LICENSE](LICENSE)。Vivado 等外部工具及用户处理器项目遵循各自的许可证。
 
-## 1. 安装与初始化
+## 1. 加载 Skill
 
-本指南同时随源码仓库和 ZIP 交付包提供。使用 ZIP 时，完整解压后按包内 [README.md](README.md) 注册本地 marketplace 并安装插件；这条路径直接安装已构建文件。
+本仓库将处理器工程经验和能力整理为六项可复用 Skill，清单见 [skills/MANIFEST.md](skills/MANIFEST.md)。每个 Skill 目录以 `SKILL.md` 为入口，参考材料、模板和辅助脚本随对应目录维护。
 
-运行 Chisel 工具时，包或源码仓库所在的完整路径及父目录必须使用 ASCII 字符，推荐 `E:\tools\waterhand`。中文及其他非 ASCII 包路径当前不受支持，会在原生适配器编译阶段失败。包路径含英文空格已实测通过；处理器项目目录含中文、空格或较长路径的测试已通过。
+按当前宿主支持的方式加载所需的完整 Skill 目录，保留其中引用的全部内容。Codex 的加载、发现和调用方式见 [OpenAI 官方 Skill 文档](https://developers.openai.com/codex/skills/)。在目标处理器项目中确认所需 Skill 已可用，再开始具体任务。
 
-以下一键初始化命令用于包含 Git 历史和 `tests/` 的源码仓库。
+## 2. 准备项目输入
 
-在 Windows x86-64 的源码仓库根目录运行：
+进入目标处理器项目的 Git 仓库根目录，先明确项目 `AGENTS.md`、Architecture、Design、源码和验证材料的实际位置。已有项目采用自己的路径映射和协作规则；新项目可以使用 `$bootstrap-processor-project` 建立根目录 `AGENTS.md`。
 
-```powershell
-.\scripts\initialize.cmd
-```
+环境构建和工具配置由用户项目承担。编译、仿真、综合及实现任务使用该项目已核验的命令、工具版本和产物目录。Agent 先读取项目说明，核对命令入口与当前任务授权，再执行对应操作。
 
-这是源码仓库的一键初始化入口。它完成环境预检、结构校验、工具测试、可复现构建和 Codex plugin 安装。默认生成物目录为 `.runtime/processor-development-skills/`，Codex 配置写入由明确执行该命令授权。
+请求中应给出任务范围、权威文档、固定基线、验收标准和已有证据路径。原始日志、生成 RTL、波形和临时报告进入用户项目指定的运行产物目录。
 
-插件安装成功后打开新的 Codex 会话。随后可以在目标处理器项目中调用 `$bootstrap-processor-project` 初始化项目级 `AGENTS.md`。
+## 3. Skill 使用方式
 
-## 2. 命令
+### 3.1 通用调用方式
 
-| 命令 | 作用 | 外部状态 |
-|---|---|---|
-| `scripts\doctor.cmd` | 探测环境和工具版本 | 只读 |
-| `scripts\build.cmd` | 从源码校验、测试并构建安装包 | 写入构建输出目录 |
-| `scripts\initialize.cmd` | 从源码执行 build 并安装本地 Codex plugin | 写入构建输出及 Codex plugin 配置 |
-| `scripts\uninstall.cmd` | 移除插件和专用 marketplace | 修改 Codex plugin 配置 |
-| `scripts\run.cmd validate-skills` | 校验插件与全部 Skill | 只读 |
-| `scripts\run.cmd check-docs <root>` | 检查用户项目文档 | 只读 |
-| `scripts\read-text.cmd <path>` | 严格按 UTF-8 读取文本 | 只读 |
-| `scripts\chisel-run.cmd <root> -- <command>` | 在进程级 Chisel 工具链环境中执行命令 | 用户项目运行数据 |
-| `scripts\run.cmd test-tools` | 执行源码仓库中的工具级测试 | 临时文件 |
-
-表中脚本从源码仓库或包根目录调用，`build`、`initialize` 和 `test-tools` 要求完整源码仓库。所有脚本入口最终调用同一个 Python CLI，并使用参数数组启动外部命令。
-
-CMD 入口把原始 Windows 参数保存在当前进程环境中，不交给 PowerShell 重新解释。Python 入口通过 `CommandLineToArgvW` 解码一次，CLI 和子进程调用随后只使用参数数组。结构化 `chisel-run` 结果同时记录 `requestedCommand`、`resolvedCommand`、`launchedCommand` 和 `childExitCode`。
-
-## 3. Doctor Profile
-
-### Package
-
-```powershell
-.\scripts\doctor.cmd --profile package
-```
-
-要求 Python 3.10 以上、Git 2.30 以上，以及支持 `plugin` 命令组的 Codex CLI。
-
-### Chisel
-
-```powershell
-.\scripts\doctor.cmd --profile chisel
-```
-
-额外要求 Java 17 以上、sbt、Verilator 5 以上、C++ 编译器、GNU Make、MSYS2 `which.exe` 与 `sh.exe`，以及完整 Verilator runtime。当前验证基线是 Chisel 7.14 与 `firtool 1.155.0`。项目解析的 firtool 不要求加入全局 `PATH`。
-
-执行 Chisel 测试时使用固定入口：
-
-```powershell
-.\scripts\chisel-run.cmd E:\projects\my-cpu -- sbt -batch test
-```
-
-示例从包或源码仓库根目录调用脚本。使用脚本的绝对路径时，可以从任意当前目录调用。它为子进程设置 `PATH`、`VERILATOR_ROOT` 与 firtool 路径，并使用包内源码即时构建的 Windows `which` 和 Make 适配器。含空格、非 ASCII 字符或较长根路径的项目会在命令期间使用临时 `subst` ASCII 短路径别名，`CHISEL_PROJECT_ROOT` 将 svsim 生成目录绑定到该别名，结束后自动释放。父 PowerShell、用户环境和系统环境保持不变。结构化调用将 `--json` 放在项目路径前：
-
-```powershell
-.\scripts\run.cmd chisel-run --json E:\projects\my-cpu -- sbt -batch test
-```
-
-### Vivado
-
-```powershell
-.\scripts\doctor.cmd --profile vivado
-```
-
-要求 Vivado 命令可执行。许可证和器件支持仍由 Vivado 安装负责。
-
-### 结构化结果
-
-```powershell
-.\scripts\doctor.cmd --profile all --json
-```
-
-JSON 会报告平台、required 状态、解析路径、版本、最低版本、失败分类和恢复提示。
-
-## 4. 明确工具路径
-
-工具没有进入 `PATH` 时，在当前终端设置对应变量：
-
-```powershell
-$env:PROCESSOR_SKILLS_MSYS2_ROOT = "C:\msys64"
-$env:PROCESSOR_SKILLS_VIVADO = "C:\Xilinx\Vivado\2025.1\bin\vivado.bat"
-.\scripts\doctor.cmd --profile all
-```
-
-各工具也可以使用独立的 `PROCESSOR_SKILLS_*` 可执行文件变量。脚本只读取这些变量，不写入用户或系统环境。
-
-## 5. 构建
-
-本节用于源码仓库，要求包含 `tests/`、插件与 Skill 源文件。正式构建要求 Git 工作树干净：
-
-```powershell
-.\scripts\build.cmd
-```
-
-开发阶段允许 dirty 输入：
-
-```powershell
-.\scripts\build.cmd --allow-dirty
-```
-
-指定输出目录：
-
-```powershell
-.\scripts\build.cmd --output E:\packages\processor-skills
-```
-
-相同 commit 和相同文件内容应产生相同 ZIP SHA256。构建结果中的 `sourceDirty` 会记录是否使用了开发模式。
-
-## 6. 文档检查
-
-```powershell
-.\scripts\run.cmd check-docs E:\projects\my-cpu --json
-```
-
-检查器默认发现 `doc/` 下的文档域，不读取或修改 `AGENTS.md`。已有项目采用其他明确映射时，按映射重复传入自定义文档根；文档总入口及其链接另行核对：
-
-```powershell
-.\scripts\run.cmd check-docs E:\projects\my-cpu `
-  --root Architecture `
-  --root Microarchitecture
-```
-
-原始日志、生成 RTL、波形和临时报告继续进入用户项目的 `.runtime/`。
-
-### UTF-8 文本读取
-
-Windows PowerShell 5.1 不能依赖默认编码读取 UTF-8 中文文档。Agent 和用户可以调用：
-
-```powershell
-.\scripts\read-text.cmd E:\projects\my-cpu\AGENTS.md
-.\scripts\run.cmd read-text E:\projects\my-cpu\AGENTS.md --json
-```
-
-该入口接受无 BOM UTF-8 和 UTF-8 BOM。UTF-16LE、历史代码页或损坏输入返回 `encoding_error` 和退出码 3。直接使用 PowerShell 时采用：
-
-```powershell
-Get-Content -Raw -Encoding utf8 -LiteralPath E:\projects\my-cpu\AGENTS.md
-```
-
-## 7. 退出码
-
-| 退出码 | 含义 |
-|---:|---|
-| `0` | 请求完成 |
-| `2` | 必需工具缺失、不可执行或版本不足 |
-| `3` | 契约、插件、Skill、测试或包结构无效 |
-| `4` | Codex CLI 或其他外部命令执行失败 |
-
-Agent 应根据退出码和 JSON 诊断处理缺口，不重复猜测命令。
-
-## 8. 安全边界
-
-1. 产品只支持纯 Windows x86-64。
-2. 初始化不会安装 Python、Git、Java、sbt、Verilator 或 Vivado。
-3. 初始化不会修改全局 `PATH`、许可证或系统包管理器。
-4. `bootstrap-processor-project` 仍然只负责项目级 `AGENTS.md`。
-5. 环境脚本不创建 Architecture、Design、Source 或 Verification。
-6. 插件安装与卸载只处理 `processor-development-skills-local` marketplace。
-
-## 9. Skill 使用方式
-
-### 9.1 通用调用方式
-
-完成初始化并打开新的 Codex 会话后，进入目标处理器项目的 Git 仓库根目录。在请求中显式写出 `$<skill-name>`，同时给出任务范围、权威文档、固定基线、验收标准和已有证据路径。
+在请求中显式写出 `$<skill-name>`，同时给出任务边界：
 
 ```text
 使用 $<skill-name> 完成 <任务>。
@@ -185,7 +32,7 @@ Agent 应根据退出码和 JSON 诊断处理缺口，不重复猜测命令。
 验收标准：<测试、时序、文档或审查要求>。
 ```
 
-Agent 会先读取目标项目中适用的 `AGENTS.md`。环境诊断、Chisel 命令封装和文档确定性检查继续使用本指南中的脚本入口。
+Agent 会先读取目标项目中适用的 `AGENTS.md`。Skill 提供工作方法，项目文档、源码、测试和工具输出提供具体工程事实。
 
 常见组合如下：
 
@@ -195,18 +42,18 @@ Agent 会先读取目标项目中适用的 `AGENTS.md`。环境诊断、Chisel �
 | 从架构目标形成 RTL | `$design-chisel-processor`，随后 `$implement-chisel-processor` |
 | 定位并修复 FPGA 时序问题 | `$trace-vivado-timing-to-rtl`，随后 `$optimize-chisel-fpga-timing` |
 
-### 9.2 `$bootstrap-processor-project`
+### 3.2 `$bootstrap-processor-project`
 
 用于创建精简的项目根目录 `AGENTS.md`，或将已有 `AGENTS.md` 与包内基线按职责进行比较。基线保留事实权威、授权、目录映射、已核验的工具入口和任务 Skill 索引。设计门禁、硬件规则、源码摘要和验证细则由对应 Skill 维护；通用基线不复制个人化输出风格。
 
 新项目的默认映射见[包内基线](skills/bootstrap-processor-project/assets/AGENTS.md)：Architecture、Design、Verification 分别位于 `doc/Architecture/`、`doc/Design/`、`doc/Verification/`，文档总入口为 `doc/README.md`，源码为 `src/`，运行产物为 `.runtime/`。bootstrap 只登记这些路径，后续文档组织 Skill 在有实际内容时创建相应文档。
 
-已有项目保留可核验的实际映射和局部约束。变更映射时须经授权，并同步项目 `AGENTS.md`、实际文档和链接。升级插件不会自动精简或覆盖已经写入项目的 `AGENTS.md`。
+已有项目保留可核验的实际映射和局部约束。变更映射时须经授权，并同步项目 `AGENTS.md`、实际文档和链接。更新 Skill 后，已经写入项目的 `AGENTS.md` 继续由项目自身维护。
 
 缺少 `AGENTS.md` 时，可以直接要求初始化：
 
 ```text
-使用 $bootstrap-processor-project 初始化 E:\projects\my-cpu 的项目级 AGENTS.md。
+使用 $bootstrap-processor-project 初始化 <project-root> 的项目级 AGENTS.md。
 保留仓库中可验证的映射和命令；缺少既有映射时采用包内默认值。
 只允许修改根目录 AGENTS.md。
 ```
@@ -220,7 +67,7 @@ Agent 会先读取目标项目中适用的 `AGENTS.md`。环境诊断、Chisel �
 
 该 Skill 的写入范围只有目标项目根目录 `AGENTS.md`。环境检查、工具安装、文档脚手架、源码和测试均不在其职责内。
 
-### 9.3 `$organize-processor-docs`
+### 3.3 `$organize-processor-docs`
 
 用于渐进建立、撰写、重构或审查人类可读文档网络。新项目默认使用项目根目录 `doc/`，已有项目按其明确映射解释 Skill 中的默认路径。它提供三种模式：
 
@@ -239,13 +86,9 @@ Agent 会先读取目标项目中适用的 `AGENTS.md`。环境诊断、Chisel �
 先列出权威归属、目标路径和需要用户决定的冲突，再实施已确定的部分。
 ```
 
-涉及接口时，文档按 `Scala declaration -> semantics` 顺序解释。涉及周期精确的状态、握手、冲突优先级、flush、replay 或生命周期语义时，同时调用 `$design-chisel-processor`。修改完成后，可以从本产品源码仓库或解压后的包根目录运行：
+涉及接口时，文档按 `Scala declaration -> semantics` 顺序解释。涉及周期精确的状态、握手、冲突优先级、flush、replay 或生命周期语义时，同时调用 `$design-chisel-processor`。修改完成后，按[文档检查](#4-文档检查)运行 Skill 自带检查器，并核对文档语义。
 
-```powershell
-.\scripts\run.cmd check-docs E:\projects\my-cpu --json
-```
-
-### 9.4 `$design-chisel-processor`
+### 3.4 `$design-chisel-processor`
 
 用于实现前的 Chisel 处理器微架构设计、设计审查和设计文档闭合。
 
@@ -258,7 +101,7 @@ Agent 会先读取目标项目中适用的 `AGENTS.md`。环境诊断、Chisel �
 
 有效输入包括 Architecture、当前 Design、相关 RTL、参考实现、接口约束和验收目标。交付结果应区分现有实现、当前设计、参考实现和新建议，并标记缺少验证证据的判断。
 
-### 9.5 `$implement-chisel-processor`
+### 3.5 `$implement-chisel-processor`
 
 用于依据已经闭合的 Architecture 和 Design 实现、审查并验证 Chisel 处理器 RTL。请求中应给出真实 elaboration top、允许修改的源码范围、相关测试入口和验收标准。
 
@@ -266,7 +109,7 @@ Agent 会先读取目标项目中适用的 `AGENTS.md`。环境诊断、Chisel �
 使用 $implement-chisel-processor 按 doc/Architecture 和 doc/Design 实现 IssueQueue。
 修改范围限于指定 Scala 源码、对应测试和同目录 _codex.md。
 追踪 Bundle 的定义、构造、存储、producer、consumer、宽度和端口顺序。
-运行聚焦 Verilator 测试并报告命令、seed、周期数、结果和日志路径。
+使用项目已核验的入口运行聚焦 Verilator 测试，报告命令、seed、周期数、结果和日志路径。
 ```
 
 每个由项目维护且在任务中新增或修改的 `.scala` 文件，都必须在同目录创建或更新 `<SourceBase>_codex.md`。双 subagent 核验默认关闭。需要独立静态审查和独立测试时，在当前请求中显式加入：
@@ -276,7 +119,7 @@ Agent 会先读取目标项目中适用的 `AGENTS.md`。环境诊断、Chisel �
 一个 subagent 只读审查源码和文档，另一个 subagent 独立运行已批准测试并保存原始证据。
 ```
 
-### 9.6 `$trace-vivado-timing-to-rtl`
+### 3.6 `$trace-vivado-timing-to-rtl`
 
 用于只读分析 Vivado synthesis 或 routed timing 证据，并将物理路径映射回生成 RTL、Chisel 源码和流水级语义。根据结论范围选择模式：
 
@@ -295,7 +138,7 @@ DCP：<routed DCP path>；时序报告：<report path>；源码基线：<commit>
 
 全局结论需要 `Whole-design Timing Audit` 的 endpoint universe 和明确的查询上限。跨运行结论需要先核对 top、part、clock、constraints、strategy、parameters、seed 和源码身份。
 
-### 9.7 `$optimize-chisel-fpga-timing`
+### 3.7 `$optimize-chisel-fpga-timing`
 
 用于在保持周期语义的前提下修改 Chisel RTL，并通过 emitted RTL、Verilator 和 routed implementation A/B 证据验证时序效果。适用于 ready 或 admission 长路径、priority encoder、one-hot arbitration、宽 mux、高扇出控制、跨模块 predicate 和寄存器边界调整。
 
@@ -307,3 +150,19 @@ DCP：<routed DCP path>；时序报告：<report path>；源码基线：<commit>
 ```
 
 增加流水级延迟、表项字段、接口或保守保护条件需要用户明确授权。交付结果应分别报告 D input、Q output、feedback、control 和 hold 路径，以及资源代价、剩余瓶颈和未验证判断。
+
+## 4. 文档检查
+
+`organize-processor-docs` 自带的[文档检查器](skills/organize-processor-docs/scripts/check_docs.py)可以独立调用。使用项目中可用的兼容 Python 解释器，以下示例以 `python` 表示；将 `<skills-root>` 和 `<project-root>` 替换为实际路径：
+
+```text
+python "<skills-root>/organize-processor-docs/scripts/check_docs.py" "<project-root>" --json
+```
+
+检查器默认发现 `doc/` 下的文档域。已有项目采用其他明确映射时，按映射重复传入自定义文档根：
+
+```text
+python "<skills-root>/organize-processor-docs/scripts/check_docs.py" "<project-root>" --root Architecture --root Microarchitecture --json
+```
+
+检查器覆盖文档链接、阅读深度、冲突标记、编码和长度预算。项目 `AGENTS.md`、文档总入口及其链接另行核对；周期语义与实现一致性继续按对应 Skill 审查。

@@ -20,10 +20,18 @@
 
 ## Protocol and queue contracts
 
-- Classify each interface as standard `Decoupled`, no-stall pulse, atomic batch,
-  prefix-valid ports, or fire-cycle-only data.
-- Standard `Decoupled` producers hold `valid` and `bits` until `fire`; the Bundle
-  does not enforce that behavior automatically.
+- Identify the Chisel interface type and the project-defined protocol
+  separately, including no-stall pulse, atomic batch, prefix-valid ports,
+  or fire-cycle-only data where applicable.
+- `DecoupledIO` uses `fire = ready && valid` for acceptance. Its base contract
+  does not require `valid` persistence or `bits` stability while stalled.
+  Follow the project Protocol and Design for holding, withdrawal, and
+  reset/flush/kill behavior. Honor any additional `IrrevocableIO` guarantees.
+- When the project protocol requires a pending transfer to remain stable
+  until acceptance, preserve `valid` and `bits` while stalled, with only the
+  reset or cancellation behavior explicitly permitted by that protocol.
+  Check these guarantees with appropriate assertions; the interface type
+  does not generate holding logic or protocol assertions.
 - Separate admission and `ready` calculation from accepted events. Allocation,
   pointer movement, and architectural updates require the documented `fire` or
   equivalent acceptance event.

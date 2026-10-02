@@ -5,8 +5,10 @@ admission control, queue handshakes, or synchronous memory controls.
 
 ## Preserve the protocol boundary
 
-Before editing, classify the interface as standard `Decoupled`, pulse,
-fire-cycle-only data, atomic batch, or another documented protocol. Separate:
+Before editing, identify the Chisel interface type and the project-defined
+acceptance, holding, and cancellation contract. Preserve any guarantees
+beyond the `DecoupledIO` base contract, including `IrrevocableIO` or
+project-specific requirements. Separate:
 
 ```text
 admission and ready calculation

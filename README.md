@@ -6,7 +6,7 @@
 
 当前版本：v3.0.3。
 
-面向 Codex 的处理器开发插件，提供项目协作、文档组织、微架构设计、Chisel 实现与验证、FPGA 时序分析的六项 Skill，以及配套的 Windows 工具脚本。
+将处理器工程经验和能力整理为可复用 Skill，扩大个人和小团队设计者的产出带宽，覆盖项目协作、文档组织、微架构设计、Chisel 实现与验证、FPGA 时序分析。当前提供六项 Skill，以及供 Codex 识别的插件元数据。
 
 适用于处理器课程项目、科研原型和已有 Chisel 工程的增量开发。你在自己的处理器项目中提出任务，Codex 根据项目文档和这些 Skill 开展设计、修改与验证，结果保存在该项目中。
 
@@ -23,33 +23,13 @@
 
 例如，增加分支预测功能时，可以先整理现有取指与重定向设计，再闭合预测信息的传递、更新和失效规则，随后实现 RTL、补充定向测试并核对文档。任务输入、允许修改范围和验收要求由你提供。
 
-Skill 的完整用法与提示词见 [用户指南](USER_GUIDE.md#9-skill-使用方式)。
+Skill 的完整用法与提示词见 [用户指南](USER_GUIDE.md#3-skill-使用方式)。
 
 ## 开始使用
 
-运行平台为 **Windows x86-64**。需要可用的 Codex 环境，以及支持 `codex plugin` 命令组的 Codex CLI。模型访问和相关账户由使用者准备，插件包不附带模型、账户或 API 凭据。
+按当前宿主支持的方式加载所需的完整 Skill 目录。每个目录以 `SKILL.md` 为入口，其引用的 `references/`、`assets/`、`scripts/` 等内容应一并保留。Codex 的加载与调用方式见 [OpenAI 官方 Skill 文档](https://developers.openai.com/codex/skills/)。
 
-工具脚本要求 Python 3.10 以上、Git 2.30 以上。执行 Chisel 仿真时还需要 Java、sbt、Verilator、C++ 编译器和 Make 等工具；获取 Vivado 实现结果时需要相应安装和许可证。具体版本、配置入口和诊断方式见 [环境契约](environment/README.md)。
-
-### 已收到 ZIP 交付包
-
-将包解压到完整路径均为 ASCII 的目录，例如 `E:\tools\waterhand`，再按包内 `README.md` 安装。中文包路径当前不受支持；包路径含英文空格、处理器项目路径含中文和空格的场景已实测通过。安装说明的源码见 [PACKAGE_README.md](PACKAGE_README.md)，其中包含包内安装命令、首次调用示例和验收步骤。
-
-### 从源码仓库安装
-
-在本仓库根目录打开 PowerShell：
-
-```powershell
-.\scripts\initialize.cmd
-```
-
-命令会检查环境，校验插件和 Skill，运行工具测试，构建安装包，再通过本地 marketplace 安装插件。成功后，在目标处理器项目中打开新的 Codex 会话。
-
-正式构建要求 Git 工作树干净。开发期间需要测试未提交修改时，显式使用：
-
-```powershell
-.\scripts\initialize.cmd --allow-dirty
-```
+在目标处理器项目中确认 Skill 已可用，然后提供任务、项目材料和允许修改的范围。模型访问与账户由使用者准备；编译、仿真和综合环境使用用户项目已有的工具与配置。
 
 ### 第一次调用
 
@@ -65,63 +45,21 @@ Skill 的完整用法与提示词见 [用户指南](USER_GUIDE.md#9-skill-使用
 
 新项目的协作规则初始化、文档组织、实现和时序工作流见 [用户指南](USER_GUIDE.md)。
 
-项目级 `AGENTS.md` 保留事实权威、授权、路径和工具入口，技术方法按任务从 Skill 读取。新项目的 bootstrap 与文档组织使用一致的 `doc/` 默认布局；已有项目保留其明确映射，详见[初始化规则](USER_GUIDE.md#92-bootstrap-processor-project)。
+项目级 `AGENTS.md` 保留事实权威、授权、路径和工具入口，技术方法按任务从 Skill 读取。新项目的 bootstrap 与文档组织使用一致的 `doc/` 默认布局；已有项目保留其明确映射，详见[初始化规则](USER_GUIDE.md#32-bootstrap-processor-project)。
 
 ## 产品如何与工程配合
 
-Codex 提供会话、模型推理、上下文、文件编辑和工具调用。Skill 提供处理器工程方法、输入输出要求和检查项；配套脚本负责工具探测、参数转发、进程级环境及结构化结果。
+Codex 提供会话、模型推理、上下文、文件编辑和工具调用。Skill 提供处理器工程方法、输入输出要求、典型缺陷和检查项。环境构建、工具安装、编译、仿真与综合命令由用户项目维护，Agent 依据项目已核验的入口执行授权任务。
 
-处理器项目自身的 `AGENTS.md`、Architecture、Design、源码和验证结果决定项目事实。项目文件与 Git 历史由该项目维护。产品运行依赖 Codex，不提供独立的 Agent 执行服务。
+处理器项目自身的 `AGENTS.md`、Architecture、Design、源码和验证结果决定项目事实。项目文件与 Git 历史由该项目维护，设计师负责架构取舍和结果接受。
 
-设计审查结果需要结合项目测试和实现证据判断。工具级测试验证本插件的脚本行为，处理器的功能、性能和时序分别由具体项目验收。
+设计审查结果需要结合项目测试和实现证据判断。处理器的功能、性能和时序由具体项目验收。Skill 自带的文档检查脚本和测试用于支持对应方法，使用方式见 [文档检查](USER_GUIDE.md#4-文档检查)。
 
-## 常用工具
+## 仓库材料
 
-以下命令从源码仓库或解压后的包根目录运行：
+仓库维护六项正式 Skill、各 Skill 所需的参考材料与辅助脚本、插件元数据和产品文档。修改前先读取 [AGENTS.md](AGENTS.md)，正式 Skill 清单见 [skills/MANIFEST.md](skills/MANIFEST.md)。
 
-```powershell
-.\scripts\doctor.cmd --profile package
-.\scripts\doctor.cmd --profile chisel
-.\scripts\doctor.cmd --profile vivado
-.\scripts\run.cmd check-docs E:\projects\my-cpu --json
-.\scripts\chisel-run.cmd E:\projects\my-cpu -- sbt -batch test
-```
-
-请将示例项目路径替换为实际位置。`doctor` 报告缺失工具和恢复提示；`chisel-run` 为单次命令准备 Windows 工具链环境。工具路径可通过 `PROCESSOR_SKILLS_*` 变量指定，详见 [用户指南](USER_GUIDE.md#4-明确工具路径)。外部工具由使用者安装和配置。
-
-## 源码开发与打包
-
-仓库维护 Skill、插件元数据、脚本、工具测试及产品文档。修改前先读取 [AGENTS.md](AGENTS.md)；当前产品定位和边界见 [V3 产品总纲](PRODUCT_PLAN/V3/PRODUCT_PLAN.md)与[产品和实验边界](PRODUCT_PLAN/V3/RUNNABLE_PRODUCT_AND_EXPERIMENT_BOUNDARY.md)。
-
-```powershell
-.\scripts\run.cmd validate-skills
-.\scripts\run.cmd test-tools
-.\scripts\build.cmd
-```
-
-`build.cmd` 包含结构校验与工具测试。默认产物位于 `.runtime/processor-development-skills/dist/`：
-
-| 产物 | 用途 |
-|---|---|
-| `processor-development-skills-<version>.zip` | 可解压安装的插件交付包 |
-| 同名 `.zip.sha256` | ZIP 校验值 |
-| `marketplace/` | 源码初始化使用的本地插件源 |
-
-包内 `README.md` 由仓库中的 `PACKAGE_README.md` 生成，两份入口分别面向仓库读者和交付包使用者。`USER_GUIDE.md` 作为共同的操作参考随包分发。
-
-ZIP 内含本地 marketplace 清单，解压后即可注册并安装。`PACKAGE_MANIFEST.json` 记录源码 commit、dirty 状态、逐文件 hash 和 payload hash。构建使用固定文件顺序、时间戳和 UTF-8/LF 文本；相同输入产生相同 ZIP 校验值。
-
-交付包包含插件、Skill、运行工具、环境契约和用户文档。源码测试、产品计划、日志、缓存和 A/B 实验证据保留在各自的仓库或实验目录。构建选项见 [用户指南](USER_GUIDE.md#5-构建)。
-
-## 卸载
-
-在源码仓库或解压后的包根目录运行：
-
-```powershell
-.\scripts\uninstall.cmd
-```
-
-该命令移除本产品插件及专用 marketplace，仓库、解压目录与用户处理器项目文件继续保留。
+[V3 产品总纲](PRODUCT_PLAN/V3/PRODUCT_PLAN.md)与[产品和实验边界](PRODUCT_PLAN/V3/RUNNABLE_PRODUCT_AND_EXPERIMENT_BOUNDARY.md)定义当前产品定位、职责和实验边界。具体处理器的设计报告与工程证据继续由对应用户项目维护。
 
 ## 许可证
 

@@ -95,7 +95,9 @@ Merge documents that always change together, cannot be understood separately, an
 
 ## Current Design and rationale
 
-Current Design states how the processor works now. Design ADRs state why a concrete mechanism was chosen. Candidate changes edit the current documents in an isolated worktree; approved content replaces the current version without creating `FinalDesign`, `DesignV2`, or backup trees.
+Current Design states how the processor works now. Design ADRs state why a concrete mechanism was chosen. Candidate changes edit the current documents as a reviewable Git diff; approved content replaces the current version without creating `FinalDesign`, `DesignV2`, or backup trees.
+
+Choose whether to use an isolated worktree based on concurrent work, conflicting edits, and project or user isolation requirements. Ordinary authorized edits can use the current worktree. Preserve unrelated working-tree changes.
 
 ## Concision
 

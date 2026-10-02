@@ -34,7 +34,7 @@ Merge documents when they duplicate facts, always change together, or require ea
 
 ## Deterministic audit
 
-Run:
+Run one of the following commands, choosing human-readable output or JSON:
 
 ```text
 python <skill-dir>/scripts/check_docs.py <project-root>

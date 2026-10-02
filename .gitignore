@@ -10,6 +10,5 @@ node_modules/
 dist/
 coverage/
 target/
-tests/fixtures/chisel-smoke/build/
 .bsp/
 .metals/
