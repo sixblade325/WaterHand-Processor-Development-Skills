@@ -12,3 +12,13 @@ coverage/
 target/
 .bsp/
 .metals/
+
+# 本地开发记录
+/Logs/
+/PRODUCT_PLAN/
+
+# 竞赛报告仅公开交付 PDF
+/report/*
+!/report/作品简介.pdf
+!/report/设计文档.pdf
+!/report/实验补充说明.pdf
