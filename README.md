@@ -37,6 +37,8 @@ Codex 提供模型调用、会话、文件编辑和工具执行能力。编译�
 
 报告按提交时的状态保留。其中涉及的 Windows Execution Support Kit 已于 2026 年 10 月 3 日移除。当前交付内容和用法以本 README、用户指南及各项 `SKILL.md` 为准；实验结论按报告注明的模型、环境、输入基线和验证范围理解。
 
+维护和贡献步骤见 [CONTRIBUTING.md](CONTRIBUTING.md)，版本变化见 [CHANGELOG.md](CHANGELOG.md)。
+
 ## 许可证
 
 本仓库的 Skill、脚本、模板和文档采用 [木兰宽松许可证，第 2 版](LICENSE)，标识为 `MulanPSL-2.0`。另有标注的第三方材料、外部工具和用户处理器项目遵循各自的许可证。

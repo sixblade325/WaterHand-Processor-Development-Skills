@@ -1,11 +1,11 @@
 {
   "name": "processor-development-skills",
-  "version": "3.0.3",
+  "version": "3.1.0",
   "description": "Human-first processor architecture, Chisel implementation, verification, and FPGA timing skills for Codex.",
   "author": {
     "name": "Processor Agent Contributors"
   },
-  "repository": "https://github.com/sixblade325/processor_agent",
+  "repository": "https://github.com/sixblade325/WaterHand-Processor-Development-Skills",
   "license": "MulanPSL-2.0",
   "keywords": [
     "processor",

@@ -226,7 +226,7 @@ def markdown_summary(paths: Iterable[TimingPath]) -> str:
     for index, path in enumerate(paths):
         lines.append(
             f"| {index} | {path.status} | {format_num(path.slack_ns)} | "
-            f"{format_num(path.data_path_delay_ns)} | {path.logic_levels or ''} | "
+            f"{format_num(path.data_path_delay_ns)} | {path.logic_levels if path.logic_levels is not None else ''} | "
             f"`{md_escape(path.source)}` | `{md_escape(path.destination)}` |"
         )
     return "\n".join(lines) + "\n"

@@ -1,28 +1,18 @@
-# Processor Agent Skills
+# 正式 Skill 清单
 
-适用版本：v3.0.3。
+适用版本：v3.1.0。六项 Skill 均以各自目录中的 `SKILL.md` 为入口，必要的参考材料、模板、脚本和测试随目录提供。
 
-Generated: 2026-09-03
+| Skill | 职责 |
+|---|---|
+| [bootstrap-processor-project](bootstrap-processor-project/SKILL.md) | 初始化或比较用户项目根目录的协作规则 |
+| [organize-processor-docs](organize-processor-docs/SKILL.md) | 建立、撰写和维护处理器文档及阅读路径 |
+| [design-chisel-processor](design-chisel-processor/SKILL.md) | 设计与审查周期精确的微架构机制 |
+| [implement-chisel-processor](implement-chisel-processor/SKILL.md) | 根据已确认设计实现 Chisel RTL、源码说明和测试 |
+| [trace-vivado-timing-to-rtl](trace-vivado-timing-to-rtl/SKILL.md) | 将物理时序证据映射到 RTL 和周期含义 |
+| [optimize-chisel-fpga-timing](optimize-chisel-fpga-timing/SKILL.md) | 实施受周期契约约束的时序优化并比较结果 |
 
-## Available Skills
+初始设计、实现和时序方法于 2026-08-29 从龙芯杯处理器开发经验中提炼，后续加入项目协作和文档组织方法。具体项目的模块、信号、源码和工程结论继续留在原项目。
 
-Each directory contains a `SKILL.md` entrypoint.
+新项目默认使用 `doc/` 文档布局，已有项目按自己的明确映射工作。工程环境和运行命令由用户项目维护，会话与工具调用由宿主提供。六项 Skill 的详细用法见[用户指南](../USER_GUIDE.md)。
 
-本清单中的全部 Skill 采用木兰宽松许可证，第 2 版（`MulanPSL-2.0`）。许可证全文见仓库根目录 [LICENSE](../LICENSE)；每个 Skill 的 frontmatter 同步声明该标识。
-
-- `bootstrap-processor-project`
-- `design-chisel-processor`
-- `implement-chisel-processor`
-- `organize-processor-docs`
-- `optimize-chisel-fpga-timing`
-- `trace-vivado-timing-to-rtl`
-
-## Notes
-
-- The initial processor implementation and timing Skills were extracted from the LoongArch Cup legacy bundle on 2026-08-29.
-- `bootstrap-processor-project` creates or safely compares one user-owned project-root `AGENTS.md`, limited to authority, authorization, path mapping, verified tool entrypoints, and task-Skill routing. Technical methods remain in their owning Skills; the user project maintains its environment, toolchain, and verified tool entrypoints.
-- `organize-processor-docs` is a stateless Skill for a human-first processor documentation network, evidence, and review. Its new-project `doc/` default matches the bootstrap baseline; existing approved project mappings take precedence in both Skills.
-- Its Bootstrap, Author, and Maintain workflows use a Design directory axis aligned with physical Chisel or RTL module topology, target-budget warnings, configurable provisional hard thresholds, two-link Architecture and Design navigation checks, encoding diagnostics, and separate handling for explanatory diagrams and evidence captures.
-- Project-specific facts remain in the legacy project and user projects.
-- Generated caches are excluded.
-- Agent sessions, task execution, and tool calls remain Agent Runtime responsibilities. Skills do not maintain Harness workflow state.
+全部正式 Skill 采用 `MulanPSL-2.0`，完整条款见 [LICENSE](../LICENSE)。

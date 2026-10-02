@@ -22,3 +22,6 @@ target/
 !/report/作品简介.pdf
 !/report/设计文档.pdf
 !/report/实验补充说明.pdf
+
+# 本地历史 Skill 包
+/skills/ChiselDevelopSkillPack.zip

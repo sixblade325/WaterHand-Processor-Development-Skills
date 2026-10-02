@@ -56,6 +56,28 @@ your-processor/
 
 后续决定已经写入正式文档时，直接指出其路径，供 Agent 继续工作。源码、测试和工具输出分别提供实现与验证证据，设计者据此判断交付是否满足目标。
 
+### 通过仓库插件目录加载
+
+本仓库也提供 `.agents/plugins/marketplace.json`，入口插件包含六项 Skill。使用支持仓库插件目录的 Codex CLI 时，可以添加固定版本的来源：
+
+```sh
+codex plugin marketplace add sixblade325/WaterHand-Processor-Development-Skills --ref v3.1.0
+```
+
+支持 `codex plugin add` 的 CLI 可以继续执行：
+
+```sh
+codex plugin add processor-development-skills@waterhand-processor-development-skills
+```
+
+也可以在支持该来源的桌面客户端中打开插件目录，选择 WaterHand Processor Development Skills 并安装，重新打开项目会话后检查可用 Skill。仓库内已有同名 Skill 时，先决定维护哪一份副本，避免重复加载。插件目录与手动复制均依赖宿主支持，具体界面和刷新方式见 [官方插件文档](https://developers.openai.com/plugins/build/plugins)。
+
+### 更新与移除
+
+手动安装时，先比较新版本与已安装目录中的本地修改，再替换所选 Skill 的完整目录。移除时只删除自己安装的 Skill 目录，用户项目的 `AGENTS.md`、设计、源码和验证材料继续由项目维护。
+
+插件方式安装时，通过宿主的插件管理入口更新或卸载；需要使用新版本时更新固定的 Git ref。发行包的 `SHA256SUMS` 用于核对下载文件，`release-manifest.json` 记录版本、来源提交和文件信息。
+
 ## 建立项目协作规则
 
 [`bootstrap-processor-project`](skills/bootstrap-processor-project/SKILL.md) 用于初始化项目根目录的 `AGENTS.md`。它把正式文档位置、授权边界、已有工具入口和任务 Skill 索引写在一起，便于后续会话进入项目后找到依据。
