@@ -21,11 +21,11 @@
 ## 1. 仓库职责与公开材料
 
 1. 本仓库维护 WaterHand Processor Development Skills。核心是以 Skill 封装工程经验和能力，扩大个人和小团队设计者的产出带宽。
-2. `README.md` 定义公开项目简介和当前交付范围，`USER_GUIDE.md` 说明安装、输入、调用和交付检查。
+2. `docs/` 由文档维护者维护公开指南、贡献说明及配套素材，中英文入口为 `docs/README.md` 和 `docs/README.en.md`。`README.md` 定义公开项目简介和当前交付范围，`docs/USER_GUIDE.md` 说明安装、输入、调用和交付检查。
 3. `skills/MANIFEST.md` 维护六项正式 Skill 的清单。每个 `skills/<name>/SKILL.md` 定义其方法、权限和门禁，配套参考材料、模板、脚本与测试随该目录维护。
 4. `.codex-plugin/plugin.json` 维护插件身份、版本和 Skill 路径；`.agents/plugins/marketplace.json` 提供仓库插件目录。版本变更同步 `CHANGELOG.md`，发布 tag 使用 `v<version>`。
-5. `CONTRIBUTING.md` 维护贡献、检查和发布步骤。`maintenance/` 由仓库维护者维护，负责校验公开文件和从 Git 提交构建发行包；`.github/` 维护 CI 与反馈模板。变更这些流程时同步命令和相应测试。
-6. `assets/user-guide/` 由指南维护者维护，只保留正文引用的图片、短动画和来源说明，素材变化同步正文引用。
+5. `docs/CONTRIBUTING.md` 维护贡献、检查和发布步骤。`maintenance/` 由仓库维护者维护，负责校验公开文件和从 Git 提交构建发行包；`.github/` 维护 CI 与反馈模板。变更这些流程时同步命令和相应测试。
+6. `docs/assets/user-guide/` 由指南维护者维护，只保留正文引用的图片、短动画和来源说明，素材变化同步正文引用。
 7. `report/` 公开保留三份竞赛交付 PDF。报告按历史版本理解，当前行为依据 Skill、脚本和测试核对。
 8. `Logs/`、`PRODUCT_PLAN/`、`.runtime/` 和历史压缩包保留在本地并忽略。它们提供历史背景，公开使用、测试和发布均须在没有这些材料的干净检出中完成。
 9. 具体处理器的 Architecture、Design、Source、Verification 和工程结论归对应用户项目维护。通用 Skill 不维护独立 Harness、运行状态或第二份处理器模型。

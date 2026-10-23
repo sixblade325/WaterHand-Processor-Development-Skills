@@ -25,14 +25,17 @@ PLUGIN_NAME = "processor-development-skills"
 REPOSITORY = "https://github.com/sixblade325/WaterHand-Processor-Development-Skills"
 LICENSE_ID = "MulanPSL-2.0"
 ROOT_FILES = frozenset({
-    "README.md", "USER_GUIDE.md", "LICENSE", "logo.png", "CHANGELOG.md",
-    "CONTRIBUTING.md", "AGENTS.md", ".gitignore",
-    "README.en.md", "USER_GUIDE.en.md", "CONTRIBUTING.en.md", "CHANGELOG.en.md",
+    "README.md", "README.en.md", "LICENSE", "logo.png", "CHANGELOG.md",
+    "CHANGELOG.en.md", "AGENTS.md", ".gitignore",
+})
+DOC_FILES = frozenset({
+    "docs/README.md", "docs/README.en.md", "docs/USER_GUIDE.md",
+    "docs/USER_GUIDE.en.md", "docs/CONTRIBUTING.md", "docs/CONTRIBUTING.en.md",
 })
 REPORT_FILES = frozenset({
     "report/作品简介.pdf", "report/设计文档.pdf", "report/实验补充说明.pdf",
 })
-PREFIXES = (".codex-plugin/", ".agents/plugins/", "assets/user-guide/", "maintenance/", ".github/")
+PREFIXES = (".codex-plugin/", ".agents/plugins/", "docs/", "maintenance/", ".github/")
 EXCLUDED_ROOTS = {"Logs", "PRODUCT_PLAN", ".runtime"}
 CACHE_PARTS = {"__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache"}
 VERSION_RE = re.compile(r"(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\Z")
@@ -236,7 +239,7 @@ def check_links(root: Path, files: list[Path]) -> None:
 
 def check_release(root: Path, expected_version: str | None = None) -> dict:
     root = root.resolve()
-    required = ROOT_FILES | REPORT_FILES | {
+    required = ROOT_FILES | DOC_FILES | REPORT_FILES | {
         ".codex-plugin/plugin.json", ".agents/plugins/marketplace.json", "skills/MANIFEST.md",
         "skills/bootstrap-processor-project/assets/AGENTS.md",
         "maintenance/check_release.py", "maintenance/build_release.py",

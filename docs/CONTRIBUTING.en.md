@@ -2,7 +2,7 @@
 
 [中文](CONTRIBUTING.md) | English
 
-This repository maintains six processor development Skills, supporting scripts, and user documentation. Before making changes, read [AGENTS.md](AGENTS.md) (Chinese) and the affected Skill and its references.
+This repository maintains six processor development Skills, supporting scripts, and user documentation. Before making changes, read [AGENTS.md](../AGENTS.md) (Chinese) and the affected Skill and its references.
 
 ## Issues and pull requests
 
@@ -23,7 +23,7 @@ python -m unittest discover -s skills/organize-processor-docs/scripts -p 'test_*
 python -m unittest discover -s skills/trace-vivado-timing-to-rtl/scripts -p 'test_*.py'
 ```
 
-The [public-file checker](maintenance/check_release.py) verifies plugin metadata, the six Skills, resources, and document links. [GitHub Actions](.github/workflows/ci.yml) runs checks and tests on Linux, macOS, and Windows. They verify files, scripts, and distribution requirements. Processor functionality, physical timing, and model behavior require separate evaluation.
+The [public-file checker](../maintenance/check_release.py) verifies plugin metadata, the six Skills, resources, and document links. [GitHub Actions](../.github/workflows/ci.yml) runs checks and tests on Linux, macOS, and Windows. They verify files, scripts, and distribution requirements. Processor functionality, physical timing, and model behavior require separate evaluation.
 
 `Logs/`, `PRODUCT_PLAN/`, `.runtime/`, and historical Skill archives remain local to maintainers. They are excluded from these checks and release packages. `report/` publicly contains three historical delivery PDFs; source documents and layout assets remain local.
 
@@ -31,16 +31,16 @@ The [public-file checker](maintenance/check_release.py) verifies plugin metadata
 
 Maintain the Chinese and English README, user guide, contribution guide, and changelog together. Keep language links working in both directions. The English guide uses the original images with English captions. The six Skill directories are shared by both editions; document translation does not require changes to their methods or language defaults.
 
-The user guides reference media under `assets/user-guide/`. The [media notes](assets/user-guide/README.en.md) record historical examples, source files, and scope. Preserve actual text when updating screenshots and explain whether an image shows input, an artifact, execution evidence, or a result summary.
+The user guides reference media under `docs/assets/user-guide/`. The [media notes](assets/user-guide/README.en.md) record historical examples, source files, and scope. Preserve actual text when updating screenshots and explain whether an image shows input, an artifact, execution evidence, or a result summary.
 
-New files follow the repository's [MulanPSL-2.0 license](LICENSE). Preserve attribution and licensing when adding third-party material. Facts and source code specific to a user project stay in that project.
+New files follow the repository's [MulanPSL-2.0 license](../LICENSE). Preserve attribution and licensing when adding third-party material. Facts and source code specific to a user project stay in that project.
 
 ## Build and release
 
-The [release builder](maintenance/build_release.py) reads files from a specified Git commit, selects public files, produces a ZIP, `SHA256SUMS`, and `release-manifest.json`, then extracts and checks the archive. The same commit and inputs produce identical package contents. Uncommitted working-tree changes are excluded.
+The [release builder](../maintenance/build_release.py) reads files from a specified Git commit, selects public files, produces a ZIP, `SHA256SUMS`, and `release-manifest.json`, then extracts and checks the archive. The same commit and inputs produce identical package contents. Uncommitted working-tree changes are excluded.
 
 ```sh
-python maintenance/build_release.py --ref HEAD --version 3.1.1 --output .runtime/release
+python maintenance/build_release.py --ref HEAD --version 3.1.2 --output .runtime/release
 ```
 
 For a new release:

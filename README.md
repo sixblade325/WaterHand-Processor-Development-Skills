@@ -25,7 +25,7 @@
 
 ## 开始使用
 
-[用户指南](USER_GUIDE.md)介绍加载方式、每项 Skill 的输入和调用示例，并配有实际工程截图。可以先从已有项目的一次设计审查开始，再按需要组合使用。
+[用户指南](docs/USER_GUIDE.md)介绍加载方式、每项 Skill 的输入和调用示例，并配有实际工程截图。可以先从已有项目的一次设计审查开始，再按需要组合使用。
 
 Codex 提供模型调用、会话、文件编辑和工具执行能力。编译、仿真、综合环境及其命令由用户项目维护；Skill 自带的文档检查器和时序报告提取脚本随对应目录提供。发布文件见 [GitHub Releases](https://github.com/sixblade325/WaterHand-Processor-Development-Skills/releases)。
 
@@ -41,7 +41,7 @@ Codex 提供模型调用、会话、文件编辑和工具执行能力。编译�
 
 报告按提交时的状态保留。其中涉及的 Windows Execution Support Kit 已于 2026 年 10 月 3 日移除。当前交付内容和用法以本 README、用户指南及各项 `SKILL.md` 为准；实验结论按报告注明的模型、环境、输入基线和验证范围理解。
 
-维护和贡献步骤见 [CONTRIBUTING.md](CONTRIBUTING.md)，版本变化见 [CHANGELOG.md](CHANGELOG.md)。
+完整阅读入口见 [docs/](docs/README.md)，维护和贡献步骤见[贡献指南](docs/CONTRIBUTING.md)，版本变化见 [CHANGELOG.md](CHANGELOG.md)。
 
 ## 许可证
 

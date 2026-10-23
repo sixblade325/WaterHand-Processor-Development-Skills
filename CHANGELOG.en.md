@@ -2,6 +2,11 @@
 
 [中文](CHANGELOG.md) | English
 
+## 3.1.2 · 2026-10-23
+
+- Move both user guides, contribution guides, and supporting media into `docs/`, with Chinese and English documentation indexes.
+- Update relative links, repository rules, the release file list, and layout tests. All six Skill directories remain unchanged.
+
 ## 3.1.1 · 2026-10-23
 
 - Add English editions of the README, user guide, contribution guide, changelog, and media notes, with links between the language editions.

@@ -67,7 +67,7 @@ The Chinese and English guides use the same six Skill directories. Their methods
 The repository also includes `.agents/plugins/marketplace.json`. Its root plugin contains all six Skills. With a Codex CLI that supports repository marketplaces, add a pinned source:
 
 ```sh
-codex plugin marketplace add sixblade325/WaterHand-Processor-Development-Skills --ref v3.1.1
+codex plugin marketplace add sixblade325/WaterHand-Processor-Development-Skills --ref v3.1.2
 ```
 
 If your CLI supports `codex plugin add`, continue with:
@@ -86,7 +86,7 @@ For plugin installation, use the host's plugin management controls to update or 
 
 ## Establish project collaboration rules
 
-[`bootstrap-processor-project`](skills/bootstrap-processor-project/SKILL.md) initializes the project-root `AGENTS.md`. It brings together formal document locations, authorization boundaries, existing tool entrypoints, and the task Skill index so later sessions can find the project's rules.
+[`bootstrap-processor-project`](../skills/bootstrap-processor-project/SKILL.md) initializes the project-root `AGENTS.md`. It brings together formal document locations, authorization boundaries, existing tool entrypoints, and the task Skill index so later sessions can find the project's rules.
 
 For a new project:
 
@@ -109,7 +109,7 @@ Check that paths and commands come from existing project evidence, authorization
 
 ## Organize engineering documents
 
-[`organize-processor-docs`](skills/organize-processor-docs/SKILL.md) helps when document entrypoints are hard to find, facts are repeated across files, or a design change requires related explanations to be updated. It organizes processor goals, detailed designs, verification evidence, and research by responsibility so people and Agents follow the same reading paths.
+[`organize-processor-docs`](../skills/organize-processor-docs/SKILL.md) helps when document entrypoints are hard to find, facts are repeated across files, or a design change requires related explanations to be updated. It organizes processor goals, detailed designs, verification evidence, and research by responsibility so people and Agents follow the same reading paths.
 
 It offers three workflows: `Bootstrap` establishes necessary structure, `Author` writes documents, and `Maintain` checks and organizes existing material. Specify the scope and reading problem:
 
@@ -136,7 +136,7 @@ The checker discovers document domains under `doc/` by default. For other layout
 
 ## Design and review microarchitecture
 
-[`design-chisel-processor`](skills/design-chisel-processor/SKILL.md) supports proposing mechanisms, reviewing drafts, and completing interfaces and cycle behavior before implementation. Typical subjects include pipelines, queues, issue logic, branch prediction, caches, MSHRs, forwarding, wakeup, and exception recovery.
+[`design-chisel-processor`](../skills/design-chisel-processor/SKILL.md) supports proposing mechanisms, reviewing drafts, and completing interfaces and cycle behavior before implementation. Typical subjects include pipelines, queues, issue logic, branch prediction, caches, MSHRs, forwarding, wakeup, and exception recovery.
 
 Provide the current design, relevant source code, goals, and constraints. The Agent traces where fields are produced, stored, and consumed; checks set and clear conditions, same-cycle priorities, flushes, retries, late responses, and entry reuse; and explains defects with trigger conditions and concrete cycle counterexamples.
 
@@ -157,7 +157,7 @@ When checking the result, distinguish existing RTL, reference implementations, d
 
 ## Implement and verify Chisel RTL
 
-[`implement-chisel-processor`](skills/implement-chisel-processor/SKILL.md) starts from confirmed Architecture and Design documents and covers RTL, interface migration, source summaries, and tests. Supply the actual elaboration top, permitted files, and project test entrypoints.
+[`implement-chisel-processor`](../skills/implement-chisel-processor/SKILL.md) starts from confirmed Architecture and Design documents and covers RTL, interface migration, source summaries, and tests. Supply the actual elaboration top, permitted files, and project test entrypoints.
 
 ```text
 Use $implement-chisel-processor to implement the confirmed branch predictor design.
@@ -180,7 +180,7 @@ Dual-subagent verification is disabled by default. To request independent static
 
 ## Trace Vivado timing paths
 
-[`trace-vivado-timing-to-rtl`](skills/trace-vivado-timing-to-rtl/SKILL.md) explains timing bottlenecks. Prepare raw reports or a routed DCP, matching source and generated RTL, and the top, device, clock constraints, and run identity.
+[`trace-vivado-timing-to-rtl`](../skills/trace-vivado-timing-to-rtl/SKILL.md) explains timing bottlenecks. Prepare raw reports or a routed DCP, matching source and generated RTL, and the top, device, clock constraints, and run identity.
 
 Choose the scope for the question:
 
@@ -211,7 +211,7 @@ The script helps organize reports. Verify path semantics against the original re
 
 ## Optimize FPGA timing
 
-[`optimize-chisel-fpga-timing`](skills/optimize-chisel-fpga-timing/SKILL.md) applies when a bottleneck has been located and the task is to change the implementation and compare results. Specify the current cycle contract, baseline evidence, permitted scope, and retest conditions.
+[`optimize-chisel-fpga-timing`](../skills/optimize-chisel-fpga-timing/SKILL.md) applies when a bottleneck has been located and the task is to change the implementation and compare results. Specify the current cycle contract, baseline evidence, permitted scope, and retest conditions.
 
 ```text
 Use $optimize-chisel-fpga-timing to optimize the identified critical path.
@@ -234,4 +234,4 @@ For design-to-implementation work, use `design-chisel-processor` to review mecha
 
 For timing work, use `trace-vivado-timing-to-rtl` to identify evidence-backed bottlenecks and modification directions, then `optimize-chisel-fpga-timing` to implement confirmed candidates and retest them. Carry the input baseline, confirmed constraints, and unverified items into each handoff so later work can continue from project files.
 
-Use and redistribution follow the root [MulanPSL-2.0 license](LICENSE). External tools and user projects retain their own licensing requirements.
+Use and redistribution follow the root [MulanPSL-2.0 license](../LICENSE). External tools and user projects retain their own licensing requirements.

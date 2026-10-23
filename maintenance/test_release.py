@@ -13,7 +13,7 @@ from unittest.mock import patch
 
 from build_release import build_release
 from check_release import (
-    LICENSE_ID, PLUGIN_NAME, REPOSITORY, REPORT_FILES, ROOT_FILES, SKILLS,
+    LICENSE_ID, PLUGIN_NAME, REPOSITORY, REPORT_FILES, ROOT_FILES, DOC_FILES, SKILLS,
     ReleaseError, check_release, included_path, safe_path,
 )
 
@@ -24,13 +24,13 @@ class ReleaseTest(unittest.TestCase):
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name) / "source"
         self.root.mkdir()
-        for name in ROOT_FILES | REPORT_FILES:
+        for name in ROOT_FILES | DOC_FILES | REPORT_FILES:
             self.write(name, "# Entry\n")
         self.write("LICENSE", "木兰宽松许可证，第2版\nMulan Permissive Software License, Version 2\n")
-        self.write("README.md", "# Example\n\n[Guide](USER_GUIDE.md#使用)\n<img src=\"logo.png\">\n")
-        self.write("USER_GUIDE.md", "# 使用\n\n[License](LICENSE)\n")
-        self.write("README.en.md", "# Example\n\n[中文](README.md) | English\n[Guide](USER_GUIDE.en.md#usage)\n")
-        self.write("USER_GUIDE.en.md", "# Usage\n\n[中文](USER_GUIDE.md) | English\n")
+        self.write("README.md", "# Example\n\n[Guide](docs/USER_GUIDE.md#使用)\n<img src=\"logo.png\">\n")
+        self.write("docs/USER_GUIDE.md", "# 使用\n\n[License](../LICENSE)\n")
+        self.write("README.en.md", "# Example\n\n[中文](README.md) | English\n[Guide](docs/USER_GUIDE.en.md#usage)\n")
+        self.write("docs/USER_GUIDE.en.md", "# Usage\n\n[中文](USER_GUIDE.md) | English\n")
         self.write("skills/MANIFEST.md", "# Skills\n\n[License](../LICENSE)\n")
         for name in SKILLS:
             self.write(f"skills/{name}/SKILL.md", (
@@ -88,6 +88,26 @@ class ReleaseTest(unittest.TestCase):
         self.assertEqual(check_release(self.root)["version"], "3.1.0")
         self.assertEqual(check_release(self.root, "3.1.0")["skills"], 6)
 
+    def test_document_layout_accepts_new_paths_and_rejects_old_paths(self) -> None:
+        for name in DOC_FILES | {"docs/assets/user-guide/example.png"}:
+            with self.subTest(name=name):
+                self.assertTrue(included_path(name))
+        for name in ("USER_GUIDE.md", "USER_GUIDE.en.md", "CONTRIBUTING.md",
+                     "CONTRIBUTING.en.md", "assets/user-guide/example.png"):
+            with self.subTest(name=name), self.assertRaisesRegex(ReleaseError, "unrecognized"):
+                included_path(name)
+
+    def test_moved_guide_resolves_media_and_parent_links(self) -> None:
+        self.write("docs/assets/user-guide/example.png", "image fixture")
+        self.write("docs/USER_GUIDE.md", (
+            "# 使用\n[Project](../README.md)\n"
+            "![Example](assets/user-guide/example.png)\n"
+        ))
+        check_release(self.root)
+        (self.root / "docs/assets/user-guide/example.png").unlink()
+        with self.assertRaisesRegex(ReleaseError, "missing link"):
+            check_release(self.root)
+
     def test_missing_skill_and_extra_skill_are_rejected(self) -> None:
         path = self.root / "skills" / SKILLS[0]
         path.rename(path.with_name("unexpected"))
@@ -104,7 +124,7 @@ class ReleaseTest(unittest.TestCase):
             check_release(self.root)
 
     def test_missing_english_documents_are_rejected(self) -> None:
-        for name in ("README.en.md", "USER_GUIDE.en.md", "CONTRIBUTING.en.md", "CHANGELOG.en.md"):
+        for name in ("README.en.md", "docs/USER_GUIDE.en.md", "docs/CONTRIBUTING.en.md", "CHANGELOG.en.md"):
             with self.subTest(name=name):
                 path = self.root / name
                 original = path.read_bytes()
@@ -114,7 +134,7 @@ class ReleaseTest(unittest.TestCase):
                 path.write_bytes(original)
 
     def test_english_guide_anchor_is_checked(self) -> None:
-        self.write("README.en.md", "[Guide](USER_GUIDE.en.md#missing)\n")
+        self.write("README.en.md", "[Guide](docs/USER_GUIDE.en.md#missing)\n")
         with self.assertRaisesRegex(ReleaseError, "missing anchor"):
             check_release(self.root)
 
@@ -160,20 +180,20 @@ class ReleaseTest(unittest.TestCase):
 
     def test_link_anchors_and_code_examples(self) -> None:
         self.write("README.md", (
-            "# Example\n[Guide](USER_GUIDE.md#使用)\n"
+            "# Example\n[Guide](docs/USER_GUIDE.md#使用)\n"
             "```markdown\n[Example](missing.md#missing)\n```\n"
             "~~~text\n[Example](missing.md)\n~~~\n"
             "`[Inline example](missing.md)`\n"
             "    [Indented example](missing.md)\n"
         ))
         check_release(self.root)
-        self.write("README.md", "[Guide](USER_GUIDE.md#missing)\n")
+        self.write("README.md", "[Guide](docs/USER_GUIDE.md#missing)\n")
         with self.assertRaisesRegex(ReleaseError, "missing anchor"):
             check_release(self.root)
 
     def test_duplicate_heading_anchor_and_reference_link(self) -> None:
-        self.write("USER_GUIDE.md", "# 使用\n\n# 使用\n")
-        self.write("README.md", "[Guide][guide]\n\n[guide]: USER_GUIDE.md#使用-1\n")
+        self.write("docs/USER_GUIDE.md", "# 使用\n\n# 使用\n")
+        self.write("README.md", "[Guide][guide]\n\n[guide]: docs/USER_GUIDE.md#使用-1\n")
         check_release(self.root)
         self.write("README.md", "[Guide][undefined]\n")
         with self.assertRaisesRegex(ReleaseError, "undefined"):
@@ -203,7 +223,7 @@ class ReleaseTest(unittest.TestCase):
     def test_build_is_reproducible_and_reads_committed_blobs(self) -> None:
         commit = self.commit_fixture()
         self.write("README.md", "dirty tree must never enter the archive\n")
-        self.write("assets/user-guide/untracked.txt", "untracked file\n")
+        self.write("docs/assets/user-guide/untracked.txt", "untracked file\n")
         first = build_release(self.root, commit, Path(self.temporary.name) / "one")
         second = build_release(self.root, "HEAD", Path(self.temporary.name) / "two", "3.1.0")
         for key in ("archive", "manifest", "checksums"):
@@ -213,9 +233,12 @@ class ReleaseTest(unittest.TestCase):
             self.assertIsNone(archive.testzip())
             self.assertTrue(all(name.startswith(prefix) for name in archive.namelist()))
             self.assertNotIn(b"dirty tree", archive.read(prefix + "README.md"))
-            self.assertNotIn(prefix + "assets/user-guide/untracked.txt", archive.namelist())
-            for name in ("README.en.md", "USER_GUIDE.en.md", "CONTRIBUTING.en.md", "CHANGELOG.en.md"):
+            self.assertNotIn(prefix + "docs/assets/user-guide/untracked.txt", archive.namelist())
+            for name in ("README.en.md", "docs/USER_GUIDE.en.md", "docs/CONTRIBUTING.en.md", "CHANGELOG.en.md"):
                 self.assertEqual(archive.read(prefix + name), (self.root / name).read_bytes())
+            for name in DOC_FILES:
+                self.assertIn(prefix + name, archive.namelist())
+            self.assertNotIn(prefix + "USER_GUIDE.md", archive.namelist())
         manifest = json.loads(Path(first["manifest"]).read_text())
         self.assertEqual(manifest["sourceCommit"], commit)
         self.assertEqual(manifest["archive"], f"{PLUGIN_NAME}-3.1.0.zip")
@@ -275,9 +298,9 @@ class ReleaseTest(unittest.TestCase):
 
     @unittest.skipUnless(shutil.which("git") and os.name != "nt", "POSIX symlink fixture")
     def test_symlink_is_rejected_by_checker_and_builder(self) -> None:
-        link = self.root / "assets/user-guide/linked.md"
+        link = self.root / "docs/assets/user-guide/linked.md"
         link.parent.mkdir(parents=True)
-        link.symlink_to("../../README.md")
+        link.symlink_to("../../../README.md")
         with self.assertRaisesRegex(ReleaseError, "symlink"):
             check_release(self.root)
         commit = self.commit_fixture()

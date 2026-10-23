@@ -67,7 +67,7 @@ your-processor/
 本仓库也提供 `.agents/plugins/marketplace.json`，入口插件包含六项 Skill。使用支持仓库插件目录的 Codex CLI 时，可以添加固定版本的来源：
 
 ```sh
-codex plugin marketplace add sixblade325/WaterHand-Processor-Development-Skills --ref v3.1.1
+codex plugin marketplace add sixblade325/WaterHand-Processor-Development-Skills --ref v3.1.2
 ```
 
 支持 `codex plugin add` 的 CLI 可以继续执行：
@@ -86,7 +86,7 @@ codex plugin add processor-development-skills@waterhand-processor-development-sk
 
 ## 建立项目协作规则
 
-[`bootstrap-processor-project`](skills/bootstrap-processor-project/SKILL.md) 用于初始化项目根目录的 `AGENTS.md`。它把正式文档位置、授权边界、已有工具入口和任务 Skill 索引写在一起，便于后续会话进入项目后找到依据。
+[`bootstrap-processor-project`](../skills/bootstrap-processor-project/SKILL.md) 用于初始化项目根目录的 `AGENTS.md`。它把正式文档位置、授权边界、已有工具入口和任务 Skill 索引写在一起，便于后续会话进入项目后找到依据。
 
 新项目可以这样请求：
 
@@ -109,7 +109,7 @@ codex plugin add processor-development-skills@waterhand-processor-development-sk
 
 ## 组织工程文档
 
-[`organize-processor-docs`](skills/organize-processor-docs/SKILL.md) 适合文档入口难找、同一事实分散在多处，或设计修改后需要同步相关说明的情况。它按照处理器目标、具体设计、验证依据和研究材料的职责组织内容，让人和 Agent 沿相同路径阅读。
+[`organize-processor-docs`](../skills/organize-processor-docs/SKILL.md) 适合文档入口难找、同一事实分散在多处，或设计修改后需要同步相关说明的情况。它按照处理器目标、具体设计、验证依据和研究材料的职责组织内容，让人和 Agent 沿相同路径阅读。
 
 它提供三种工作方式：`Bootstrap` 建立必要的文档结构，`Author` 撰写具体文档，`Maintain` 检查和整理已有内容。使用时给出文档范围及希望解决的阅读问题，例如：
 
@@ -136,7 +136,7 @@ python .agents/skills/organize-processor-docs/scripts/check_docs.py . --json
 
 ## 设计与审查微架构
 
-[`design-chisel-processor`](skills/design-chisel-processor/SKILL.md) 适用于提出新机制、审查草稿，以及在实现前补全接口和周期行为。常见对象包括流水线、队列、发射逻辑、分支预测、Cache、MSHR、转发、唤醒和异常恢复。
+[`design-chisel-processor`](../skills/design-chisel-processor/SKILL.md) 适用于提出新机制、审查草稿，以及在实现前补全接口和周期行为。常见对象包括流水线、队列、发射逻辑、分支预测、Cache、MSHR、转发、唤醒和异常恢复。
 
 给出当前设计、相关源码、目标与约束后，Agent 会追踪字段的产生、保存和消费位置，检查置位与清除条件、同周期优先级、flush、重试、晚到响应和表项复用。发现问题时，应说明触发条件并给出具体周期反例。
 
@@ -157,7 +157,7 @@ python .agents/skills/organize-processor-docs/scripts/check_docs.py . --json
 
 ## 实现与验证 Chisel RTL
 
-[`implement-chisel-processor`](skills/implement-chisel-processor/SKILL.md) 从已确认的 Architecture 和 Design 出发，处理 RTL、接口迁移、源码说明和测试。请求中需要提供真实 elaboration top、允许修改的文件及项目测试入口。
+[`implement-chisel-processor`](../skills/implement-chisel-processor/SKILL.md) 从已确认的 Architecture 和 Design 出发，处理 RTL、接口迁移、源码说明和测试。请求中需要提供真实 elaboration top、允许修改的文件及项目测试入口。
 
 ```text
 使用 $implement-chisel-processor 实现已确认的分支预测设计。
@@ -180,7 +180,7 @@ Agent 先核对设计是否足以确定实现，再追踪受影响接口的全�
 
 ## 追踪 Vivado 时序路径
 
-[`trace-vivado-timing-to-rtl`](skills/trace-vivado-timing-to-rtl/SKILL.md) 用于解释时序瓶颈。准备原始报告或 routed DCP、对应源码与生成 RTL，以及 top、器件、时钟约束和运行版本信息。
+[`trace-vivado-timing-to-rtl`](../skills/trace-vivado-timing-to-rtl/SKILL.md) 用于解释时序瓶颈。准备原始报告或 routed DCP、对应源码与生成 RTL，以及 top、器件、时钟约束和运行版本信息。
 
 根据问题选择分析范围：
 
@@ -211,7 +211,7 @@ python .agents/skills/trace-vivado-timing-to-rtl/scripts/extract_timing_path.py 
 
 ## 优化 FPGA 时序
 
-[`optimize-chisel-fpga-timing`](skills/optimize-chisel-fpga-timing/SKILL.md) 适用于已经定位瓶颈、准备修改实现并比较结果的任务。需要明确当前周期契约、基线证据、允许修改的范围和复测条件。
+[`optimize-chisel-fpga-timing`](../skills/optimize-chisel-fpga-timing/SKILL.md) 适用于已经定位瓶颈、准备修改实现并比较结果的任务。需要明确当前周期契约、基线证据、允许修改的范围和复测条件。
 
 ```text
 使用 $optimize-chisel-fpga-timing 优化已定位的关键路径。
@@ -234,4 +234,4 @@ Skill 会结合比较器、选择网络、宽 mux、高扇出控制和寄存器�
 
 时序任务先用 `trace-vivado-timing-to-rtl` 找到有证据支持的瓶颈和修改方向，再用 `optimize-chisel-fpga-timing` 实施已确认候选并复测。每次交接都保留输入基线、已确认约束和未验证事项，后续工作便能继续沿项目文件推进。
 
-使用和再分发遵循仓库根目录的 [MulanPSL-2.0 许可证](LICENSE)。外部工具与用户项目保留各自的许可要求。
+使用和再分发遵循仓库根目录的 [MulanPSL-2.0 许可证](../LICENSE)。外部工具与用户项目保留各自的许可要求。

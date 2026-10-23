@@ -25,7 +25,7 @@ These methods come from processor development practice and apply to course proje
 
 ## Getting started
 
-The [user guide](USER_GUIDE.en.md) covers installation, inputs, and example requests for each Skill, with screenshots from actual projects. An existing design review is one place to start; combine Skills as the work requires.
+The [user guide](docs/USER_GUIDE.en.md) covers installation, inputs, and example requests for each Skill, with screenshots from actual projects. An existing design review is one place to start; combine Skills as the work requires.
 
 Codex provides model access, sessions, file editing, and tool execution. The user's project owns its compilation, simulation, and synthesis environments and commands. The document checker and timing report extractor ship with their respective Skills. Download packages from [GitHub Releases](https://github.com/sixblade325/WaterHand-Processor-Development-Skills/releases).
 
@@ -41,7 +41,7 @@ The guide is available in Chinese and English. All six Skill directories are sha
 
 The reports retain their submitted content. The Windows Execution Support Kit described in them was removed on October 3, 2026. This README, the user guide, and each `SKILL.md` describe the current package. Interpret experimental conclusions within the model, environment, input baseline, and verification scope stated in each report.
 
-See [CONTRIBUTING](CONTRIBUTING.en.md) for maintenance and contribution instructions and [CHANGELOG](CHANGELOG.en.md) for release history.
+See [docs/](docs/README.en.md) for the documentation index, [CONTRIBUTING](docs/CONTRIBUTING.en.md) for maintenance instructions, and [CHANGELOG](CHANGELOG.en.md) for release history.
 
 ## License
 
