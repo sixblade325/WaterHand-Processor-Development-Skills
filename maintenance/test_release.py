@@ -29,6 +29,8 @@ class ReleaseTest(unittest.TestCase):
         self.write("LICENSE", "木兰宽松许可证，第2版\nMulan Permissive Software License, Version 2\n")
         self.write("README.md", "# Example\n\n[Guide](USER_GUIDE.md#使用)\n<img src=\"logo.png\">\n")
         self.write("USER_GUIDE.md", "# 使用\n\n[License](LICENSE)\n")
+        self.write("README.en.md", "# Example\n\n[中文](README.md) | English\n[Guide](USER_GUIDE.en.md#usage)\n")
+        self.write("USER_GUIDE.en.md", "# Usage\n\n[中文](USER_GUIDE.md) | English\n")
         self.write("skills/MANIFEST.md", "# Skills\n\n[License](../LICENSE)\n")
         for name in SKILLS:
             self.write(f"skills/{name}/SKILL.md", (
@@ -99,6 +101,21 @@ class ReleaseTest(unittest.TestCase):
     def test_missing_linked_resource_is_rejected(self) -> None:
         (self.root / "skills" / SKILLS[0] / "references/example.md").unlink()
         with self.assertRaisesRegex(ReleaseError, "missing link"):
+            check_release(self.root)
+
+    def test_missing_english_documents_are_rejected(self) -> None:
+        for name in ("README.en.md", "USER_GUIDE.en.md", "CONTRIBUTING.en.md", "CHANGELOG.en.md"):
+            with self.subTest(name=name):
+                path = self.root / name
+                original = path.read_bytes()
+                path.unlink()
+                with self.assertRaisesRegex(ReleaseError, "missing required"):
+                    check_release(self.root)
+                path.write_bytes(original)
+
+    def test_english_guide_anchor_is_checked(self) -> None:
+        self.write("README.en.md", "[Guide](USER_GUIDE.en.md#missing)\n")
+        with self.assertRaisesRegex(ReleaseError, "missing anchor"):
             check_release(self.root)
 
     def test_frontmatter_rejects_unsupported_yaml_and_wrong_license(self) -> None:
@@ -197,6 +214,8 @@ class ReleaseTest(unittest.TestCase):
             self.assertTrue(all(name.startswith(prefix) for name in archive.namelist()))
             self.assertNotIn(b"dirty tree", archive.read(prefix + "README.md"))
             self.assertNotIn(prefix + "assets/user-guide/untracked.txt", archive.namelist())
+            for name in ("README.en.md", "USER_GUIDE.en.md", "CONTRIBUTING.en.md", "CHANGELOG.en.md"):
+                self.assertEqual(archive.read(prefix + name), (self.root / name).read_bytes())
         manifest = json.loads(Path(first["manifest"]).read_text())
         self.assertEqual(manifest["sourceCommit"], commit)
         self.assertEqual(manifest["archive"], f"{PLUGIN_NAME}-3.1.0.zip")

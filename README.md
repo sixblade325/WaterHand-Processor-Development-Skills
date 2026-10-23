@@ -1,5 +1,7 @@
 # WaterHand Processor Development Skills
 
+中文 | [English](README.en.md)
+
 <p align="center">
   <img src="logo.png" alt="WaterHand Processor Development Skills" width="280">
 </p>
@@ -26,6 +28,8 @@
 [用户指南](USER_GUIDE.md)介绍加载方式、每项 Skill 的输入和调用示例，并配有实际工程截图。可以先从已有项目的一次设计审查开始，再按需要组合使用。
 
 Codex 提供模型调用、会话、文件编辑和工具执行能力。编译、仿真、综合环境及其命令由用户项目维护；Skill 自带的文档检查器和时序报告提取脚本随对应目录提供。发布文件见 [GitHub Releases](https://github.com/sixblade325/WaterHand-Processor-Development-Skills/releases)。
+
+用户指南提供中英文版本，共用六个 Skill 目录。现有语言默认值和英文输出请求方式见指南。
 
 ## 历史报告
 

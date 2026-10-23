@@ -27,6 +27,7 @@ LICENSE_ID = "MulanPSL-2.0"
 ROOT_FILES = frozenset({
     "README.md", "USER_GUIDE.md", "LICENSE", "logo.png", "CHANGELOG.md",
     "CONTRIBUTING.md", "AGENTS.md", ".gitignore",
+    "README.en.md", "USER_GUIDE.en.md", "CONTRIBUTING.en.md", "CHANGELOG.en.md",
 })
 REPORT_FILES = frozenset({
     "report/作品简介.pdf", "report/设计文档.pdf", "report/实验补充说明.pdf",

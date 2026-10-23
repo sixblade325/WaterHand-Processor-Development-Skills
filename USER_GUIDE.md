@@ -1,5 +1,7 @@
 # WaterHand 使用指南
 
+中文 | [English](USER_GUIDE.en.md)
+
 本指南介绍六项 Skill 的使用场景、准备材料和交付结果。示例以 Chisel 处理器项目为背景，文档路径需要按自己项目的实际布局替换。
 
 - [加载与准备](#加载与准备)
@@ -56,12 +58,16 @@ your-processor/
 
 后续决定已经写入正式文档时，直接指出其路径，供 Agent 继续工作。源码、测试和工具输出分别提供实现与验证证据，设计者据此判断交付是否满足目标。
 
+### 使用语言
+
+中英文指南共用六个 Skill 目录。本次双语文档更新保持其方法、模板、脚本和界面元数据不变，初始化模板仍默认使用中文。需要英文输出时，在请求中明确指定，并遵循目标项目已有的语言约定，例如补充 `Write this review in English.`。长期调整已有项目的 `AGENTS.md` 需要项目所有者授权。
+
 ### 通过仓库插件目录加载
 
 本仓库也提供 `.agents/plugins/marketplace.json`，入口插件包含六项 Skill。使用支持仓库插件目录的 Codex CLI 时，可以添加固定版本的来源：
 
 ```sh
-codex plugin marketplace add sixblade325/WaterHand-Processor-Development-Skills --ref v3.1.0
+codex plugin marketplace add sixblade325/WaterHand-Processor-Development-Skills --ref v3.1.1
 ```
 
 支持 `codex plugin add` 的 CLI 可以继续执行：

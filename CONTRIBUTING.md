@@ -1,5 +1,7 @@
 # 参与维护
 
+中文 | [English](CONTRIBUTING.en.md)
+
 本仓库维护六项处理器开发 Skill、配套脚本和使用文档。修改前先读取 [AGENTS.md](AGENTS.md) 及受影响 Skill 的正文和参考资料。
 
 ## 提交问题与修改
@@ -25,7 +27,9 @@ python -m unittest discover -s skills/trace-vivado-timing-to-rtl/scripts -p 'tes
 
 `Logs/`、`PRODUCT_PLAN/`、`.runtime/` 和历史 Skill 压缩包仅在维护者本地保留。它们不参与上述检查，也不进入发行包。`report/` 公开维护三份历史交付 PDF，原稿与排版素材留在本地。
 
-## 素材与许可
+## 文档、素材与许可
+
+README、用户指南、贡献指南和版本记录的中英文版本同步维护，并保留双向语言链接。英文指南沿用原图并提供英文图注。两种语言共用六个 Skill 目录，文档翻译无需改动其方法和语言默认值。
 
 用户指南只引用 `assets/user-guide/` 中维护的媒体。[素材说明](assets/user-guide/README.md)记录历史案例、源文件和适用范围。更新截图时保留真实文字，说明画面属于输入、产物、执行记录还是结果汇总。
 
@@ -36,12 +40,12 @@ python -m unittest discover -s skills/trace-vivado-timing-to-rtl/scripts -p 'tes
 [发行包构建器](maintenance/build_release.py)从指定 Git 提交读取文件，按公开文件清单生成 ZIP、`SHA256SUMS` 和 `release-manifest.json`，并在解压后重新校验。相同提交与输入会生成相同包内容，工作树中的未提交修改不参与构建。
 
 ```sh
-python maintenance/build_release.py --ref HEAD --version 3.1.0 --output .runtime/release
+python maintenance/build_release.py --ref HEAD --version 3.1.1 --output .runtime/release
 ```
 
 发布一个新版本时：
 
-1. 更新 `.codex-plugin/plugin.json`、`skills/MANIFEST.md` 和 `CHANGELOG.md` 中的版本信息；用户指南包含固定版本命令时同步更新。
+1. 更新 `.codex-plugin/plugin.json`、`skills/MANIFEST.md` 和中英文版本记录中的版本信息；同步两份用户指南中的固定版本命令及贡献指南中的构建示例。
 2. 运行全部检查和测试，检查公开目录、历史报告与素材范围。
 3. 提交改动并推送，确认该提交的 CI 通过；从这个提交构建发行包。
 4. 创建 `v<version>` tag，指向相同提交，将 ZIP、校验和及构建清单附到 GitHub Release。
